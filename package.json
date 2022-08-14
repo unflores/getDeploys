@@ -1,0 +1,16 @@
+{
+  "name": "deploy_counts",
+  "version": "1.0.0",
+  "description": "Get deploy counts",
+  "main": "getDeploys.js",
+  "scripts": {
+    "start": "node getDeploys.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^16.0.1",
+    "octokit": "^2.0.5"
+  }
+}
