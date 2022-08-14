@@ -5,12 +5,13 @@
   "main": "getDeploys.js",
   "scripts": {
     "start": "node getDeploys.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "dotenv": "^16.0.1",
+    "jest": "^28.1.3",
     "octokit": "^2.0.5"
   }
 }
