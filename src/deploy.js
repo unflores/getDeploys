@@ -10,7 +10,7 @@ class Deploy {
     const month = createdAt.getUTCMonth()+1;
     const week = Math.ceil(createdAt.getDate() / 7);
 
-    return `${year}-${month}-${week}`;
+    return `${year}_${month}_${week}`;
   }
 }
 
