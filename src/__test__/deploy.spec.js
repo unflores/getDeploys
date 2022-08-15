@@ -22,3 +22,11 @@ describe('#weekBucket', () => {
 
   })
 });
+
+describe('#monthBucket', () => {
+  test('turns a created_at into the format YYYY_M', () => {
+    // N represents the week of the month
+    const deploy = new Deploy(params)
+    expect(deploy.monthBucket).toBe('2022_8');
+  });
+});

@@ -12,6 +12,15 @@ class Deploy {
 
     return `${year}_${month}_${week}`;
   }
+
+  // gets the bucket key for a given deploy week
+  get monthBucket() {
+    const createdAt = new Date(this.createdAt);
+    const year = createdAt.getFullYear();
+    const month = createdAt.getUTCMonth()+1;
+
+    return `${year}_${month}`;
+  }
 }
 
 module.exports = {
