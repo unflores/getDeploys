@@ -1,20 +1,23 @@
 const { Octokit } = require('octokit');
 require('dotenv/config');
 const { Deploy } = require('./src/deploy');
+const {writeFileSync} = require('fs');
 
 const octokit = new Octokit({
   auth: process.env.TOKEN
 })
 
-async function getDeploys() {
+async function getPage(page) {
   const {OWNER, REPO} = process.env;
 
+  // https://docs.github.com/en/rest/deployments/deployments#list-deployments
   const request = 'GET /repos/{owner}/{repo}/deployments'
   const params = {
     owner: OWNER,
     repo: REPO,
     environment: 'production',
-    per_page: 100
+    per_page: 100,
+    page: page
   };
 
   results = await octokit.request(request, params);
@@ -26,29 +29,43 @@ async function getDeploys() {
   return results.data;
 }
 
+async function getDeploys() {
+  let pagePromises = [];
+  for(let i=0; i<20; i++) {
+    pagePromises.push(getPage(i));
+  }
+
+  const pages = await Promise.all(pagePromises);
+  const list = pages.flat()
+  console.log(list[list.length - 1]);
+  return pages.flat();
+}
+
 
 let results;
 
-function pagesToDeploysPerWeek(deploys){
-  return deploys.reduce((deploysPerWeek, deployParams) => {
+function pagesToDeploysPerPeriod(deploys, period = 'month'){
+  bucket = `${period}Bucket`
+  return deploys.reduce((deploysPerPeriod, deployParams) => {
     const deploy = new Deploy(deployParams);
 
-    if(deploysPerWeek[deploy.weekBucket] === undefined) {
-      deploysPerWeek[deploy.weekBucket] = 0;
+    if(deploysPerPeriod[deploy[bucket]] === undefined) {
+      deploysPerPeriod[deploy[bucket]] = 0;
     }
 
-    deploysPerWeek[deploy.weekBucket] += 1;
+    deploysPerPeriod[deploy[bucket]] += 1;
 
-    return deploysPerWeek;
+    return deploysPerPeriod;
   },{});
 }
 
 new Promise(async (resolve, reject) => {
   const deploys = await getDeploys()
 
-  const deploysPerWeek = pagesToDeploysPerWeek(deploys);
-  console.log(deploysPerWeek);
-  process.exit();
+  const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
+  console.log(deploysPerPeriod);
+
+  writeFileSync('data.js', "const data = " + JSON.stringify(deploysPerPeriod) + ';');
 
   resolve('done');
 })

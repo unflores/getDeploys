@@ -1,0 +1,28 @@
+<html>
+<head>
+  <script src="./data.js" ></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<!-- Plotly chart will be drawn inside this DIV -->
+<div id="graphDiv"></div>
+  <script>
+    var weeks = Object.keys(data);
+    const new_data = (trace) => Object.assign(trace, {y: Object.values(data).reverse(), x: Object.keys(data).reverse()});
+
+    // add random data to three line traces
+    const lines = [
+      {mode:'lines', line: {color: "#b55400"}}
+    ].map(new_data);
+
+    const layout = {
+      title: 'Deploys per period',
+      uirevision:'true',
+      xaxis: {autorange: true},
+      yaxis: {autorange: true}
+    };
+
+    Plotly.react('graphDiv', lines, layout);
+  </script>
+</body>
+</html>
