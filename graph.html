@@ -1,6 +1,7 @@
 <html>
 <head>
   <script src="./data.js" ></script>
+  <script src="./contributers.js" ></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
@@ -8,12 +9,38 @@
 <div id="graphDiv"></div>
   <script>
     var weeks = Object.keys(data);
-    const new_data = (trace) => Object.assign(trace, {y: Object.values(data).reverse(), x: Object.keys(data).reverse()});
 
+    const deploysPerContributer = Object.keys(contributers).reduce((result, date, index, arr) => {
+
+      result[date] = data[date] / contributers[date];
+      return result;
+    }, {});
+
+    console.log(deploysPerContributer);
     // add random data to three line traces
     const lines = [
-      {mode:'lines', line: {color: "#b55400"}}
-    ].map(new_data);
+      {
+        mode:'lines',
+        name: 'deploys',
+        line: {color: "#b55400"},
+        y: Object.values(data).reverse(),
+        x: Object.keys(data).reverse()
+      },
+      {
+        mode: 'lines',
+        name: 'deploys per contributer',
+        line: {color: '#333'},
+        y: Object.values(deploysPerContributer),
+        x: Object.keys(deploysPerContributer)
+      },
+      {
+        mode: 'lines',
+        name: 'contributers',
+        line: {color: '#abc'},
+        y: Object.values(contributers),
+        x: Object.keys(contributers)
+      }
+    ];
 
     const layout = {
       title: 'Deploys per period',
