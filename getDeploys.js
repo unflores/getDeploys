@@ -2,7 +2,7 @@ const { Octokit } = require('octokit');
 require('dotenv/config');
 const { Deploy } = require('./src/deploy');
 const {writeFileSync} = require('fs');
-const syncSubjectWriter = require('../lib/syncSubjectWriter');
+const syncSubjectWriter = require('./lib/syncSubjectWriter');
 
 const octokit = new Octokit({
   auth: process.env.TOKEN
@@ -40,7 +40,6 @@ async function getDeploys() {
   return pages.flat();
 }
 
-
 let results;
 
 function pagesToDeploysPerPeriod(deploys, period = 'month'){
@@ -63,7 +62,6 @@ new Promise(async (resolve, reject) => {
 
   const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
   console.log(deploysPerPeriod);
-
   syncSubjectWriter.write({subject: 'data', data: deploysPerPeriod });
   resolve('done');
 });

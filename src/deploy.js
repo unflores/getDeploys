@@ -7,7 +7,7 @@ class Deploy {
   get weekBucket() {
     const createdAt = new Date(this.createdAt);
     const year = createdAt.getFullYear();
-    const month = createdAt.getUTCMonth()+1;
+    const month = createdAt.getUTCMonth() + 1;
     const week = Math.ceil(createdAt.getDate() / 7);
 
     return `${year}_${month}_${week}`;
@@ -17,9 +17,9 @@ class Deploy {
   get monthBucket() {
     const createdAt = new Date(this.createdAt);
     const year = createdAt.getFullYear();
-    const month = createdAt.getUTCMonth()+1;
+    const month = createdAt.getUTCMonth() + 1;
 
-    return `${year}_${month}`;
+    return `${year}-${month}`;
   }
 }
 
