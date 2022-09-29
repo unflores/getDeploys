@@ -1,42 +1,43 @@
 <html>
+
 <head>
-  <script src="./data.js" ></script>
-  <script src="./contributers.js" ></script>
+  <script src="./data/deploys.js"></script>
+  <script src="./data/contributers.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
+
 <body>
-<!-- Plotly chart will be drawn inside this DIV -->
-<div id="graphDiv"></div>
+  <!-- Plotly chart will be drawn inside this DIV -->
+  <div id="graphDiv"></div>
   <script>
-    var weeks = Object.keys(data);
+    var weeks = Object.keys(deploys);
 
     const deploysPerContributer = Object.keys(contributers).reduce((result, date, index, arr) => {
 
-      result[date] = data[date] / contributers[date];
+      result[date] = deploys[date] / contributers[date];
       return result;
     }, {});
 
     console.log(deploysPerContributer);
-    // add random data to three line traces
     const lines = [
       {
-        mode:'lines',
+        mode: 'lines',
         name: 'deploys',
-        line: {color: "#b55400"},
-        y: Object.values(data).reverse(),
-        x: Object.keys(data).reverse()
+        line: { color: "#b55400" },
+        y: Object.values(deploys).reverse(),
+        x: Object.keys(deploys).reverse()
       },
       {
         mode: 'lines',
         name: 'deploys per contributer',
-        line: {color: '#333'},
+        line: { color: '#333' },
         y: Object.values(deploysPerContributer),
         x: Object.keys(deploysPerContributer)
       },
       {
         mode: 'lines',
         name: 'contributers',
-        line: {color: '#abc'},
+        line: { color: '#abc' },
         y: Object.values(contributers),
         x: Object.keys(contributers)
       }
@@ -44,12 +45,13 @@
 
     const layout = {
       title: 'Deploys per period',
-      uirevision:'true',
-      xaxis: {autorange: true},
-      yaxis: {autorange: true}
+      uirevision: 'true',
+      xaxis: { autorange: true },
+      yaxis: { autorange: true }
     };
 
     Plotly.react('graphDiv', lines, layout);
   </script>
 </body>
+
 </html>

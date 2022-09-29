@@ -1,7 +1,7 @@
 const { Octokit } = require('octokit');
 require('dotenv/config');
 const { Deploy } = require('./src/deploy');
-const {writeFileSync} = require('fs');
+const { writeFileSync } = require('fs');
 const syncSubjectWriter = require('./lib/syncSubjectWriter');
 
 const octokit = new Octokit({
@@ -9,7 +9,7 @@ const octokit = new Octokit({
 })
 
 async function getPage(page) {
-  const {OWNER, REPO} = process.env;
+  const { OWNER, REPO } = process.env;
 
   // https://docs.github.com/en/rest/deployments/deployments#list-deployments
   const request = 'GET /repos/{owner}/{repo}/deployments'
@@ -23,8 +23,8 @@ async function getPage(page) {
 
   results = await octokit.request(request, params);
 
-  if(results.status !== 200) {
-    console.log({request, params});
+  if (results.status !== 200) {
+    console.log({ request, params });
     process.exit();
   }
   return results.data;
@@ -32,7 +32,7 @@ async function getPage(page) {
 
 async function getDeploys() {
   let pagePromises = [];
-  for(let i=0; i<20; i++) {
+  for (let i = 0; i < 20; i++) {
     pagePromises.push(getPage(i));
   }
 
@@ -42,26 +42,32 @@ async function getDeploys() {
 
 let results;
 
-function pagesToDeploysPerPeriod(deploys, period = 'month'){
+function pagesToDeploysPerPeriod(deploys, period = 'month') {
   bucket = `${period}Bucket`
   return deploys.reduce((deploysPerPeriod, deployParams) => {
     const deploy = new Deploy(deployParams);
 
-    if(deploysPerPeriod[deploy[bucket]] === undefined) {
+    if (deploysPerPeriod[deploy[bucket]] === undefined) {
       deploysPerPeriod[deploy[bucket]] = 0;
     }
 
     deploysPerPeriod[deploy[bucket]] += 1;
 
     return deploysPerPeriod;
-  },{});
+  }, {});
 }
 
-new Promise(async (resolve, reject) => {
-  const deploys = await getDeploys()
+if (process.argv[1] === __filename) {
+  new Promise(async (resolve, reject) => {
+    const deploys = await getDeploys()
 
-  const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
-  console.log(deploysPerPeriod);
-  syncSubjectWriter.write({subject: 'data', data: deploysPerPeriod });
-  resolve('done');
-});
+    const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
+    console.log(deploysPerPeriod);
+    syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod });
+    resolve('done');
+  });
+}
+
+module.exports = {
+  getDeploys: getDeploys
+};
