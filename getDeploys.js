@@ -1,7 +1,6 @@
 const { Octokit } = require('octokit');
 require('dotenv/config');
 const { Deploy } = require('./src/deploy');
-const { writeFileSync } = require('fs');
 const syncSubjectWriter = require('./lib/syncSubjectWriter');
 
 const octokit = new Octokit({
