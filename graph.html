@@ -4,6 +4,7 @@
   <script src="./data/deploys.js"></script>
   <script src="./data/fails.js"></script>
   <script src="./data/contributers.js"></script>
+  <script src="./data/history.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
@@ -11,6 +12,28 @@
   <div id="deploysGraph"></div>
   <div id="changeFailGraph"></div>
   <script>
+
+    const buildVerticalLine = (date) => {
+      return {
+        type: 'line',
+        x0: date,
+        y0: 0,
+        x1: date,
+        y1: 1,
+        yref: "paper",
+        name: "yass",
+        line: {
+          color: 'grey',
+          width: 1.5,
+          dash: 'dot'
+        }
+      };
+    }
+
+    const buildHistoryLines = (historyEvents) => {
+      return Object.keys(historyEvents).map((date) => buildVerticalLine(date));
+    }
+
     (() => {
       if (typeof (contributers) === 'undefined' || typeof (deploys) === 'undefined') {
         const graphHTML = document.querySelectorAll('#deploysGraph')[0];
@@ -51,7 +74,8 @@
         title: 'Deploys per period',
         uirevision: 'true',
         xaxis: { autorange: true },
-        yaxis: { autorange: true }
+        yaxis: { autorange: true },
+        shapes: buildHistoryLines(historyEvents)
       };
 
       Plotly.react('deploysGraph', lines, layout);
@@ -71,6 +95,7 @@
         result[date] = fails[date] / deploys[date];
         return result;
       }, {});
+      const graphHeight = Math.max(...Object.values(changeFailRate));
 
       const lines = [
         {
@@ -93,7 +118,9 @@
         title: 'Change Fail Rate',
         uirevision: 'true',
         xaxis: { autorange: true },
-        yaxis: { autorange: true }
+        yaxis: { autorange: true },
+        shapes: buildHistoryLines(historyEvents)
+
       };
 
       Plotly.react('changeFailGraph', lines, layout);
