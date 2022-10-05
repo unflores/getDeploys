@@ -95,7 +95,7 @@
 
       const changeFailRate = Object.keys(fails).reduce((result, date, index, arr) => {
 
-        result[date] = fails[date] / deploys[date];
+        result[date] = ((fails[date] / deploys[date.slice(0, 6)]) * 100).toFixed(2);
         return result;
       }, {});
       const graphHeight = Math.max(...Object.values(changeFailRate));
@@ -118,12 +118,11 @@
       ];
 
       const layout = {
-        title: 'Change Fail Rate',
+        title: 'Change/Fail %',
         uirevision: 'true',
         xaxis: { autorange: true },
         yaxis: { autorange: true },
         shapes: buildHistoryLines(historyEvents)
-
       };
 
       Plotly.react('changeFailGraph', lines, layout);
