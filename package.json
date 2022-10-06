@@ -7,11 +7,19 @@
     "start": "node getDeploys.js",
     "test": "jest"
   },
+  "jest": {
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-     "dotenv": "^16.0.1",
+    "dotenv": "^16.0.1",
     "jest": "^28.1.3",
     "octokit": "^2.0.5"
+  },
+  "dependencies": {
+    "nock": "^13.2.9"
   }
 }
