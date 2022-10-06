@@ -28,7 +28,7 @@ async function getPage(page) {
   }
   return results.data;
 }
-
+// returns Array<Deploy>
 async function getDeploys() {
   let pagePromises = [];
   for (let i = 0; i < 20; i++) {
@@ -36,6 +36,7 @@ async function getDeploys() {
   }
 
   const pages = await Promise.all(pagePromises);
+
   return pages.flat();
 }
 
@@ -58,6 +59,7 @@ function pagesToDeploysPerPeriod(deploys, period = 'month') {
 
 if (process.argv[1] === __filename) {
   new Promise(async (resolve, reject) => {
+    DeployClient.getDeploys()
     const deploys = await getDeploys()
 
     const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);

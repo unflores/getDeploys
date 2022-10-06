@@ -1,4 +1,5 @@
 class Deploy {
+  // @params params.created_at 2022-08-09T09:32:18Z
   constructor(params) {
     this.createdAt = params.created_at;
   }
