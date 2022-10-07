@@ -41,7 +41,9 @@ class DeployClient {
 
     const pages = await Promise.all(pagePromises);
 
-    return pages.flat().map((params) => new Occurance(params));
+    return pages.flat()
+      .map((params) => ({ ...params, createdAt: params.created_at }))
+      .map((params) => new Occurance(params));
   }
 }
 

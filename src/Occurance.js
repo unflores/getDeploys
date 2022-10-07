@@ -1,8 +1,8 @@
 // Something that happens at a given time
 class Occurance {
-  // @params params.created_at 2022-08-09T09:32:18Z
+  // @params params.createdAt 2022-08-09T09:32:18Z
   constructor(params) {
-    this.createdAt = params.created_at;
+    this.createdAt = params.createdAt;
   }
 
   // gets the bucket key for a given deploy week
