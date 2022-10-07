@@ -23,6 +23,6 @@ describe('getDeploys', () => {
 
   it('returns proper format', async () => {
     const deploys = await getDeploys();
-    expect(deploys[0].created_at).toBe('2022-08-09T09:32:18Z');
+    expect(deploys[0].createdAt).toBe('2022-08-09T09:32:18Z');
   })
 });

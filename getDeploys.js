@@ -37,16 +37,14 @@ async function getDeploys() {
 
   const pages = await Promise.all(pagePromises);
 
-  return pages.flat();
+  return pages.flat().map((params) => new Deploy(params));
 }
 
 let results;
 
 function pagesToDeploysPerPeriod(deploys, period = 'month') {
   bucket = `${period}Bucket`
-  return deploys.reduce((deploysPerPeriod, deployParams) => {
-    const deploy = new Deploy(deployParams);
-
+  return deploys.reduce((deploysPerPeriod, deploy) => {
     if (deploysPerPeriod[deploy[bucket]] === undefined) {
       deploysPerPeriod[deploy[bucket]] = 0;
     }
@@ -59,7 +57,6 @@ function pagesToDeploysPerPeriod(deploys, period = 'month') {
 
 if (process.argv[1] === __filename) {
   new Promise(async (resolve, reject) => {
-    DeployClient.getDeploys()
     const deploys = await getDeploys()
 
     const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
