@@ -6,11 +6,20 @@ Octokit.mockImplementation(() => {
   return { request: request };
 });
 
-const { getDeploys } = require('../../getDeploys');
+const { createDeployGraphData } = require('../../getDeploys');
+const { DeployClient } = require('../deployClient');
+
+const mockedWriter = { write: jest.fn() };
 
 describe('getDeploys', () => {
-  it('returns results for each fetch', async () => {
-    const deploys = await getDeploys();
+  it('writes to a file called deploys', async () => {
+    const deploys = await createDeployGraphData(new DeployClient({}), mockedWriter);
+    writerParams = mockedWriter.write.mock.calls[0][0]
+    expect(writerParams.subject).toBe('deploys');
+  });
+
+  it('writes to a file called deploys', async () => {
+    const deploys = await createDeployGraphData(new DeployClient({}), mockedWriter);
     // This is stupid, I don't know how to go all
     // the way back to our first deploy, but 20 pages back is enough for now.
     //
@@ -18,11 +27,7 @@ describe('getDeploys', () => {
     // I don't know how much to fetch
     // Since I am mocking the data each fetch has a response
     // Hence 20 responses
-    expect(deploys.length).toBe(20);
+    writerParams = mockedWriter.write.mock.calls[0][0]
+    expect(Object.values(writerParams.data)[0]).toBe(20);
   });
-
-  it('returns proper format', async () => {
-    const deploys = await getDeploys();
-    expect(deploys[0].createdAt).toBe('2022-08-09T09:32:18Z');
-  })
 });

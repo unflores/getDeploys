@@ -1,46 +1,6 @@
-const { Octokit } = require('octokit');
 require('dotenv/config');
-const { Deploy } = require('./src/deploy');
+const { DeployClient } = require('./src/deployClient');
 const syncSubjectWriter = require('./lib/syncSubjectWriter');
-
-const octokit = new Octokit({
-  auth: process.env.TOKEN
-})
-
-async function getPage(page) {
-  const { OWNER, REPO } = process.env;
-
-  // https://docs.github.com/en/rest/deployments/deployments#list-deployments
-  const request = 'GET /repos/{owner}/{repo}/deployments'
-  const params = {
-    owner: OWNER,
-    repo: REPO,
-    environment: 'production',
-    per_page: 100,
-    page: page
-  };
-
-  results = await octokit.request(request, params);
-
-  if (results.status !== 200) {
-    console.log({ request, params });
-    process.exit();
-  }
-  return results.data;
-}
-// returns Array<Deploy>
-async function getDeploys() {
-  let pagePromises = [];
-  for (let i = 0; i < 20; i++) {
-    pagePromises.push(getPage(i));
-  }
-
-  const pages = await Promise.all(pagePromises);
-
-  return pages.flat().map((params) => new Deploy(params));
-}
-
-let results;
 
 function pagesToDeploysPerPeriod(deploys, period = 'month') {
   bucket = `${period}Bucket`
@@ -55,17 +15,24 @@ function pagesToDeploysPerPeriod(deploys, period = 'month') {
   }, {});
 }
 
+async function createDeployGraphData(deployClient, syncSubjectWriter) {
+  const deploys = await deployClient.getDeploys();
+  const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
+  syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod });
+}
+
 if (process.argv[1] === __filename) {
   new Promise(async (resolve, reject) => {
-    const deploys = await getDeploys()
+    const authToken = process.env.TOKEN
+    const repo = process.env.REPO
+    const repoOwner = process.env.OWNER;
 
-    const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
-    console.log(deploysPerPeriod);
-    syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod });
+    const deployClient = new DeployClient({ authToken, repo, repoOwner });
+    createDeployGraphData(deployClient, syncSubjectWriter);
     resolve('done');
   });
 }
 
 module.exports = {
-  getDeploys: getDeploys
+  createDeployGraphData
 };
