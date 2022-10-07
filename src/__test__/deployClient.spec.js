@@ -1,6 +1,6 @@
 const { Octokit } = require('octokit');
 jest.mock('octokit');
-const request = async (_path, _params) => ({ status: 200, data: { created_at: '2022-08-09T09:32:18Z' } });
+const request = jest.fn(async (_path, _params) => ({ status: 200, data: { created_at: '2022-08-09T09:32:18Z' } }));
 
 Octokit.mockImplementation(() => {
   return { request: request };
@@ -23,7 +23,14 @@ describe('DeployClient', () => {
       expect(deploys.length).toBe(20);
     });
 
-    it('returns proper format', async () => {
+    it('sends repo identifiers to 3rd party', async () => {
+      const client = new DeployClient({ authToken: null, repo: 'repo', repoOwner: 'me' });
+      await client.getDeploys();
+
+      expect(request.mock.calls[0][0]).toBe('GET /repos/me/repo/deployments');
+    });
+
+    it('returns Deploy objects', async () => {
       const client = new DeployClient({ authToken: null, repo: 'repo', repoOwner: 'me' });
       const deploys = await client.getDeploys();
 
