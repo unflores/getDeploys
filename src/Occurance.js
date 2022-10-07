@@ -1,4 +1,5 @@
-class Deploy {
+// Something that happens at a given time
+class Occurance {
   // @params params.created_at 2022-08-09T09:32:18Z
   constructor(params) {
     this.createdAt = params.created_at;
@@ -25,5 +26,5 @@ class Deploy {
 }
 
 module.exports = {
-  Deploy: Deploy
+  Occurance
 };

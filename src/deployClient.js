@@ -1,5 +1,5 @@
 const { Octokit } = require('octokit');
-const { Deploy } = require('./deploy');
+const { Occurance } = require('./Occurance');
 
 class DeployClient {
   constructor({ authToken, repo, repoOwner }) {
@@ -32,7 +32,7 @@ class DeployClient {
     return results.data;
   }
 
-  // returns Array<Deploy>
+  // returns Array<Occurance>
   async getDeploys() {
     let pagePromises = [];
     for (let i = 0; i < 20; i++) {
@@ -41,7 +41,7 @@ class DeployClient {
 
     const pages = await Promise.all(pagePromises);
 
-    return pages.flat().map((params) => new Deploy(params));
+    return pages.flat().map((params) => new Occurance(params));
   }
 }
 

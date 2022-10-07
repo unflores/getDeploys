@@ -1,4 +1,4 @@
-const { Deploy } = require('../deploy');
+const { Occurance } = require('../Occurance');
 
 let params;
 beforeEach(() => {
@@ -10,15 +10,15 @@ beforeEach(() => {
 describe('#weekBucket', () => {
   test('turns a created_at into the format YYYY-M-N', () => {
     // N represents the week of the month
-    const deploy = new Deploy(params)
-    expect(deploy.weekBucket).toBe('2022-8-2');
+    const occurance = new Occurance(params)
+    expect(occurance.weekBucket).toBe('2022-8-2');
   });
 
   test('parses the 5th week', () => {
     params.created_at = '2022-08-31T09:32:18Z';
     // N represents the week of the month
-    const deploy = new Deploy(params)
-    expect(deploy.weekBucket).toBe('2022-8-5');
+    const occurance = new Occurance(params)
+    expect(occurance.weekBucket).toBe('2022-8-5');
 
   })
 });
@@ -26,7 +26,7 @@ describe('#weekBucket', () => {
 describe('#monthBucket', () => {
   test('turns a created_at into the format YYYY-M', () => {
     // N represents the week of the month
-    const deploy = new Deploy(params)
-    expect(deploy.monthBucket).toBe('2022-8');
+    const occurance = new Occurance(params)
+    expect(occurance.monthBucket).toBe('2022-8');
   });
 });
