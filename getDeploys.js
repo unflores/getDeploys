@@ -1,5 +1,5 @@
 require('dotenv/config');
-const { DeployClient } = require('./src/deployClient');
+const { DeployClient } = require('./src/DeployClient');
 const syncSubjectWriter = require('./lib/syncSubjectWriter');
 
 function pagesToDeploysPerPeriod(deploys, period = 'month') {

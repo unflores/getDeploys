@@ -6,7 +6,7 @@ Octokit.mockImplementation(() => {
   return { request: request };
 });
 
-const { DeployClient } = require('../deployClient');
+const { DeployClient } = require('../DeployClient');
 
 describe('DeployClient', () => {
   describe('#getDeploys', () => {
