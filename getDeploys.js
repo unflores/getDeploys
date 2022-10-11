@@ -17,6 +17,7 @@ function pagesToDeploysPerPeriod(deploys, period = 'month') {
 
 async function createDeployGraphData(deployClient, syncSubjectWriter) {
   const deploys = await deployClient.getDeploys();
+
   const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
   syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod });
 }

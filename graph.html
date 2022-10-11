@@ -5,12 +5,15 @@
   <script src="./data/fails.js"></script>
   <script src="./data/contributers.js"></script>
   <script src="./data/history.js"></script>
+  <script src="./data/releaseCandidates.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
   <div id="deploysGraph"></div>
   <div id="changeFailGraph"></div>
+  <div id="releaseCandidatesGraph"></div>
+
   <script>
 
     const buildVerticalLine = (date) => {
@@ -124,6 +127,35 @@
       };
 
       Plotly.react('changeFailGraph', lines, layout);
+    })();
+  </script>
+
+  <script>
+    (() => {
+      if (typeof (contributers) === 'undefined' || typeof (deploys) === 'undefined') {
+        const graphHTML = document.querySelectorAll('#deploysGraph')[0];
+        graphHTML.innerHTML = 'No graph for Deploys.';
+        return;
+      }
+
+      const lines = [
+        {
+          mode: 'lines',
+          name: 'release candidates',
+          line: { color: "#b55400" },
+          y: releaseCandidates.map((elements) => elements[1]),
+          x: releaseCandidates.map((elements) => elements[0])
+        }
+      ];
+
+      const layout = {
+        title: 'RC per month',
+        uirevision: 'true',
+        xaxis: { autorange: true },
+        yaxis: { autorange: true },
+      };
+
+      Plotly.react('releaseCandidatesGraph', lines, layout);
     })();
   </script>
 </body>
