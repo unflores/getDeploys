@@ -1,3 +1,4 @@
+const moment = require('moment');
 // Something that happens at a given time
 class Occurance {
   // @params params.createdAt 2022-08-09T09:32:18Z
@@ -6,29 +7,12 @@ class Occurance {
   }
 
   get dayBucket() {
-    const createdAt = new Date(this.createdAt);
-    const year = createdAt.getFullYear();
-    const month = createdAt.getUTCMonth() + 1;
-    const day = createdAt.getDate();
-    return `${year}-${month}-${day}`;
-  }
-  // gets the bucket key for a given deploy week
-  get weekBucket() {
-    const createdAt = new Date(this.createdAt);
-    const year = createdAt.getFullYear();
-    const month = createdAt.getUTCMonth() + 1;
-    const week = Math.ceil(createdAt.getDate() / 7);
-
-    return `${year}-${month}-${week}`;
+    return moment(this.createdAt).format('YYYY-M-D');
   }
 
   // gets the bucket key for a given deploy week
   get monthBucket() {
-    const createdAt = new Date(this.createdAt);
-    const year = createdAt.getFullYear();
-    const month = createdAt.getUTCMonth() + 1;
-
-    return `${year}-${month}`;
+    return moment(this.createdAt).format('YYYY-M');
   }
 }
 
