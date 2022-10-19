@@ -1,12 +1,11 @@
 const { Octokit } = require('octokit');
-jest.mock('octokit');
+const { DeployClient } = require('../DeployClient');
 const request = jest.fn(async (_path, _params) => ({ status: 200, data: { created_at: '2022-08-09T09:32:18Z' } }));
 
+jest.mock('octokit');
 Octokit.mockImplementation(() => {
   return { request: request };
 });
-
-const { DeployClient } = require('../DeployClient');
 
 describe('DeployClient', () => {
   describe('#getDeploys', () => {
