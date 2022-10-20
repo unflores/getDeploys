@@ -38,7 +38,7 @@ function makeDayCountsCumulative(dayCounts) {
 }
 
 async function createDeployGraphData(absDirectory, writer) {
-  const logs = await gitLogReader.read(absDirectory);
+  const commits = await gitLogReader.getCommits(absDirectory);
 
   let data = makeDayCountsCumulative(
     releaseCandidatesPerDay(releaseCandidates)

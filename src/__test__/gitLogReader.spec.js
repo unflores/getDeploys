@@ -17,12 +17,12 @@ child_process.exec.mockImplementation(
 describe('gitLogReader', () => {
   describe('#commits', () => {
     test('properly splits commits', async () => {
-      const commits = await gitLogReader.read('/some/directory')
+      const commits = await gitLogReader.getCommits('/some/directory')
       expect(commits.length).toBe(4);
     });
 
     test('extracts a date', async () => {
-      const commits = await gitLogReader.read('/some/directory')
+      const commits = await gitLogReader.getCommits('/some/directory')
       expect(commits.map((commit) => commit.createdAt)).toEqual([
         'Thu Sep 29 14:36:26 2022 +0200',
         'Wed Sep 28 21:37:37 2022 +0200',

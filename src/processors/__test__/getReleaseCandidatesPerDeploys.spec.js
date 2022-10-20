@@ -1,11 +1,11 @@
 const { exportGraphData } = require('../getReleaseCandidatesPerDeploys');
-const { DeployClient } = require('../DeployClient');
-const gitLogReader = require('../../lib/gitLogReader');
-const { Occurance } = require('../Occurance');
+const { DeployClient } = require('../../DeployClient');
+const gitLogReader = require('../../gitLogReader');
+const { Occurance } = require('../../Occurance');
 
-jest.mock('../DeployClient');
-jest.mock('../../lib/gitLogReader', () => {
-  return { read: jest.fn().mockResolvedValue((_dir) => candidates()) }
+jest.mock('../../DeployClient');
+jest.mock('../../gitLogReader', () => {
+  return { getCommits: jest.fn().mockResolvedValue((_dir) => candidates()) }
 })
 
 DeployClient.mockImplementation(() => {
@@ -31,6 +31,6 @@ describe('exportGraphData', () => {
   it('writes proper structure', () => {
     exportGraphData('', new DeployClient(), mockedWriter);
     writerParams = mockedWriter.write.mock.calls[0][0]
-    expect(Object.values(writerParams.data)[0]).toBe('2022-08-1');
+    expect(Object.keys(writerParams.data)[0]).toBe('2022-8-1');
   });
 });
