@@ -39,7 +39,6 @@ function makeDayCountsCumulative(dayCounts) {
 
 async function createDeployGraphData(absDirectory, writer) {
   const logs = await gitLogReader.read(absDirectory);
-  const releaseCandidates = logs.map((log) => new Occurance(log));
 
   let data = makeDayCountsCumulative(
     releaseCandidatesPerDay(releaseCandidates)
