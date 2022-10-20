@@ -1,5 +1,6 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const { Occurance } = require('./Occurance');
 
 async function read(absDirectory) {
   const logs = await exec(
@@ -12,6 +13,7 @@ async function read(absDirectory) {
     .map((line) => line.split('_commitsep_'))
     .map((vals) => ({ hash: vals[0].trim(), createdAt: vals[1] }))
     .filter((commit) => commit.hash !== '')
+    .map((params) => new Occurance(params))
 }
 
 module.exports = {

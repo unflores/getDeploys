@@ -21,16 +21,6 @@ describe('gitLogReader', () => {
       expect(commits.length).toBe(4);
     });
 
-    test('extracts a hash', async () => {
-      const commits = await gitLogReader.read('/some/directory')
-      expect(commits.map((commit) => commit.hash)).toEqual([
-        '69adf19',
-        '67decd4',
-        'c1cfd3b',
-        'f2fc00c'
-      ]);
-    });
-
     test('extracts a date', async () => {
       const commits = await gitLogReader.read('/some/directory')
       expect(commits.map((commit) => commit.createdAt)).toEqual([
