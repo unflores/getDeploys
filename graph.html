@@ -94,8 +94,8 @@
       }
 
       const changeFailRate = Object.keys(fails).reduce((result, date, index, arr) => {
-
-        result[date] = fails[date] / deploys[date];
+        const monthDate = date.split('-').slice(0, 2).join('-')
+        result[date] = (fails[date] / deploys[monthDate]) * 100;
         return result;
       }, {});
       const graphHeight = Math.max(...Object.values(changeFailRate));
