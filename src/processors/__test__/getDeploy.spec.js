@@ -6,8 +6,8 @@ Octokit.mockImplementation(() => {
   return { request: request };
 });
 
-const { createDeployGraphData } = require('../../getDeploys');
-const { DeployClient } = require('../DeployClient');
+const { createDeployGraphData } = require('../getDeploys');
+const { DeployClient } = require('../../DeployClient');
 
 const mockedWriter = { write: jest.fn() };
 

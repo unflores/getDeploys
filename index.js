@@ -1,8 +1,9 @@
+require('dotenv/config');
 const syncSubjectWriter = require('./lib/syncSubjectWriter');
-const { createDeployGraphData } = require('./getDeploys');
+const { createDeployGraphData } = require('./src/processors/getDeploys');
 const { DeployClient } = require('./src/DeployClient');
 
-new Promise(async (resolve, reject) => {
+new Promise(async (resolve) => {
   const authToken = process.env.TOKEN
   const repo = process.env.REPO
   const repoOwner = process.env.OWNER;
@@ -13,4 +14,6 @@ new Promise(async (resolve, reject) => {
   }
 
   resolve('done');
+}, (reason) => {
+  console.log(reason);
 });
