@@ -1,8 +1,8 @@
 require('dotenv/config');
-const gitLogReader = require('../lib/gitLogReader');
-const syncSubjectWriter = require('../lib/syncSubjectWriter');
-const { Occurance } = require('./Occurance');
-const dateLib = require('../lib/dateLib');
+const gitLogReader = require('../../lib/gitLogReader');
+const syncSubjectWriter = require('../../lib/syncSubjectWriter');
+const { Occurance } = require('../Occurance');
+const dateLib = require('../../lib/dateLib');
 
 // @params candidates Occurance
 function releaseCandidatesPerDay(candidates) {

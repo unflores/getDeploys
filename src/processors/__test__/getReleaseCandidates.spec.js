@@ -1,5 +1,5 @@
 const { makeDayCountsCumulative, releaseCandidatesPerDay } = require('../getReleaseCandidates');
-const { Occurance } = require('../Occurance');
+const { Occurance } = require('../../Occurance');
 describe('makeDayCountsCumulative', () => {
   it('Adds count from previous day', () => {
     const dayCounts = { '2010-10-10': 1, '2010-10-11': 41 };
