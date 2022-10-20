@@ -1,7 +1,3 @@
-require('dotenv/config');
-const { DeployClient } = require('./src/DeployClient');
-const syncSubjectWriter = require('./lib/syncSubjectWriter');
-
 function pagesToDeploysPerPeriod(deploys, period = 'month') {
   bucket = `${period}Bucket`
   return deploys.reduce((deploysPerPeriod, deploy) => {
@@ -20,18 +16,6 @@ async function createDeployGraphData(deployClient, syncSubjectWriter) {
 
   const deploysPerPeriod = pagesToDeploysPerPeriod(deploys);
   syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod });
-}
-
-if (process.argv[1] === __filename) {
-  new Promise(async (resolve, reject) => {
-    const authToken = process.env.TOKEN
-    const repo = process.env.REPO
-    const repoOwner = process.env.OWNER;
-
-    const deployClient = new DeployClient({ authToken, repo, repoOwner });
-    createDeployGraphData(deployClient, syncSubjectWriter);
-    resolve('done');
-  });
 }
 
 module.exports = {
