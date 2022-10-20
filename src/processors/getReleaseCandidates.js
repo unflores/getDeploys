@@ -1,6 +1,4 @@
-require('dotenv/config');
 const gitLogReader = require('../../lib/gitLogReader');
-const syncSubjectWriter = require('../../lib/syncSubjectWriter');
 const { Occurance } = require('../Occurance');
 const dateLib = require('../../lib/dateLib');
 
@@ -55,14 +53,6 @@ async function createDeployGraphData(absDirectory, writer) {
     .map((dateString) => [dateString, data[dateString]]);
 
   writer.write({ subject: 'releaseCandidates', data })
-}
-
-if (process.argv[1] === __filename) {
-  new Promise(async (resolve, reject) => {
-    const absDirectory = process.env.PROJECT_DIRECTORY;
-    createDeployGraphData(absDirectory, syncSubjectWriter);
-    resolve('done');
-  });
 }
 
 module.exports = {
