@@ -1,4 +1,4 @@
-const gitLogReader = require('../../lib/gitLogReader');
+const gitLogReader = require('../gitLogReader');
 const { Occurance } = require('../Occurance');
 const dateLib = require('../../lib/dateLib');
 
