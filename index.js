@@ -13,6 +13,12 @@ new Promise(async (resolve) => {
   const absDirectory = process.env.PROJECT_DIRECTORY;
   const deployClient = new DeployClient({ authToken, repo, repoOwner });
 
+  if (process.env.npm_config_processor === undefined) {
+    console.error('FAILURE: Must provide flag "processor"');
+    resolve('done');
+    return;
+  }
+
   if (process.env.npm_config_processor === 'getDeploys') {
     await deployProcessor.createDeployGraphData(deployClient, syncSubjectWriter);
   } else if (process.env.npm_config_processor === 'getReleaseCandidates') {
@@ -20,6 +26,7 @@ new Promise(async (resolve) => {
   } else if (process.env.npm_config_processor === 'getReleaseCandidatesPerDeploys') {
     await candidatesDeploysProcessor.exportGraphData(absDirectory, deployClient, syncSubjectWriter);
   }
+
   resolve('done');
 }, (reason) => {
   console.log(reason);
