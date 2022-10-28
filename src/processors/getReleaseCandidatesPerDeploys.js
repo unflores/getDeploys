@@ -9,6 +9,10 @@ function oldestDeploy(deploys) {
 function commitsPerDeploysInMonth(commits, deploys, month) {
   deploysPerMonth = deploys.filter((a) => a.monthBucket === month).length;
   commitsPerMonth = commits.filter((a) => a.monthBucket === month).length;
+
+  if (deploysPerMonth === 0) {
+    return 0;
+  }
   return commitsPerMonth / deploysPerMonth;
 }
 
@@ -17,6 +21,7 @@ function releaseCandidatesPerDeploys({ commits, deploys, endDate }) {
     return [];
   }
   let currentDate = oldestDeploy(deploys).monthBucket;
+
   const candidatesPerDeploys = [];
 
   while (build(currentDate) < build(endDate)) {
@@ -30,8 +35,10 @@ function releaseCandidatesPerDeploys({ commits, deploys, endDate }) {
 }
 
 async function exportGraphData(absDirectory, deployClient, writer) {
-  const data = releaseCandidatesPerDeploys({});
-  // const data = { '2022-8-1': 1 };
+  const commits = await gitLogReader.getCommits(absDirectory);
+  const deploys = await deployClient.getDeploys();
+  const data = releaseCandidatesPerDeploys({ commits, deploys, endDate: moment().format('YYYY-MM') });
+
   writer.write({ subject: 'releaseCandidatesPerDeploys', data })
 }
 

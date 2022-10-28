@@ -4,21 +4,20 @@ const gitLogReader = require('../../gitLogReader');
 const { Occurance } = require('../../Occurance');
 
 jest.mock('../../DeployClient');
-jest.doMock('../../gitLogReader', () => {
-  const candidates = new Occurance({ createdAt: '2022-08-10T09:32:18Z' });
+jest.mock('../../gitLogReader', () => {
+  const { Occurance: mockOccurance } = require('../../Occurance');
+  const candidates = [new mockOccurance({ createdAt: '2022-08-10T09:32:18Z' })];
 
   return { getCommits: jest.fn().mockResolvedValue(candidates) }
 })
-
 
 DeployClient.mockImplementation(() => {
   return { getDeploys: async () => deploys() }
 });
 
 const deploys = () => {
-  return new Occurance({ createdAt: '2022-08-09T09:32:18Z' });
+  return [new Occurance({ createdAt: '2022-08-09T09:32:18Z' })];
 }
-
 
 const mockedWriter = { write: jest.fn() };
 
@@ -31,13 +30,13 @@ describe('exportGraphData', () => {
 
   it('writes proper structure', async () => {
     await exportGraphData('someDirectory', new DeployClient(), mockedWriter);
-    // console.log(mockedWriter.write.mock.calls[0])
     writerParams = mockedWriter.write.mock.calls[0][0]
-    expect(Object.keys(writerParams.data)[0]).toBe('2022-8-1');
+
+    expect(writerParams.data[0][0]).toBe('2022-8');
   });
 });
 
-describe.only('releaseCandidatesPerDeploys', () => {
+describe('releaseCandidatesPerDeploys', () => {
   it('returns the mean of commits per deploys for a month', () => {
     expect(releaseCandidatesPerDeploys({
       commits: [
@@ -51,6 +50,20 @@ describe.only('releaseCandidatesPerDeploys', () => {
       endDate: '2022-9'
     })).toEqual([['2022-8', 2]])
   });
+
+  describe('when no deploys for a month', () => {
+    it('returns 0', () => {
+      expect(releaseCandidatesPerDeploys({
+        commits: [
+          new Occurance({ createdAt: '2022-07-29T09:32:18Z' })
+        ],
+        deploys: [
+          new Occurance({ createdAt: '2022-07-05T09:32:18Z' })
+        ],
+        endDate: '2022-9'
+      })).toEqual([['2022-7', 1], ['2022-8', 0]])
+    })
+  })
 
   describe('when multiple deploys', () => {
     it('starts with the first', () => {
