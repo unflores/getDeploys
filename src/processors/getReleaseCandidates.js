@@ -41,7 +41,7 @@ async function createDeployGraphData(absDirectory, writer) {
   const commits = await gitLogReader.getCommits(absDirectory);
 
   let data = makeDayCountsCumulative(
-    releaseCandidatesPerDay(releaseCandidates)
+    releaseCandidatesPerDay(commits)
   );
   // let data = releaseCandidatesPerDay(releaseCandidates);
   //Only get 2022
