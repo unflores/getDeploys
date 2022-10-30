@@ -25,6 +25,10 @@ new Promise(async (resolve) => {
     await candidatesProcessor.createDeployGraphData(absDirectory, syncSubjectWriter)
   } else if (process.env.npm_config_processor === 'getReleaseCandidatesPerDeploys') {
     await candidatesDeploysProcessor.exportGraphData(absDirectory, deployClient, syncSubjectWriter);
+  } else {
+    console.error('FAILURE: Must provide a VALID processor.');
+    resolve('done');
+    return;
   }
 
   resolve('done');
