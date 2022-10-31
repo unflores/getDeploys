@@ -1,10 +1,10 @@
 require('dotenv/config');
-const syncSubjectWriter = require('./lib/syncSubjectWriter');
-const deployProcessor = require('./src/processors/getDeploys');
-const candidatesProcessor = require('./src/processors/getReleaseCandidates');
-const candidatesDeploysProcessor = require('./src/processors/getReleaseCandidatesPerDeploys');
+const syncSubjectWriter = require('../lib/syncSubjectWriter');
+const deployProcessor = require('./processors/getDeploys');
+const candidatesProcessor = require('./processors/getReleaseCandidates');
+const candidatesDeploysProcessor = require('./processors/getReleaseCandidatesPerDeploys');
 
-const { DeployClient } = require('./src/DeployClient');
+const { DeployClient } = require('./DeployClient');
 
 new Promise(async (resolve) => {
   const authToken = process.env.TOKEN

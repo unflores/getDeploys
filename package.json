@@ -4,8 +4,9 @@
   "description": "Get deploy counts",
   "main": "getDeploys.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest"
+    "start": "",
+    "test": "jest",
+    "process": "node tasks/index.js"
   },
   "jest": {
     "setupFiles": [
