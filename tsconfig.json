@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "outDir": "./dist/",
+    "noUnusedLocals": true,
+    "allowUnreachableCode": true,
+    "sourceMap": true,
+    "pretty": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "alwaysStrict": true,
+    "typeRoots": [
+      "@types",
+      "./node_modules/@types"
+    ]
+  },
+  "include": [
+    "./index.ts",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
