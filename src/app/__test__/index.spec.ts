@@ -1,16 +1,16 @@
 import * as request from 'supertest'
 import { buildApp } from '../index'
+import * as path from 'path'
 
 let app = buildApp({
   httpasswd: 'test',
-  staticDir: __dirname
+  staticDir: path.resolve(__dirname, 'assets/')
 })
 
 describe('app', () => {
   describe('static directories', () => {
     describe('missing file', () => {
       it('returns 404', async () => {
-
         await request(app)
           .get('/assets/nonexistent-file.js')
           .expect(404)

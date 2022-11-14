@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
+import { buildApp } from './src/app'
+
 // import { logger } from './config/logger'
 // import app from './src/server'
 // import { dbSetup } from './config/mongoose'
@@ -8,8 +12,11 @@
 // app.listen(port)
 
 async function start() {
-  let app = buildApp(config)
-  app.listen(process.env.PORT)
+  let app = buildApp({
+    httpasswd: process.env.httpasswd,
+    staticDir: process.env.staticDir
+  })
+  app.listen(process.env.listenPort)
 }
 
 if (require.main) {
