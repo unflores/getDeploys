@@ -13,13 +13,13 @@ const mockedWriter = { write: jest.fn() };
 
 describe('getDeploys', () => {
   it('writes to a file called deploys', async () => {
-    const deploys = await createDeployGraphData(new DeployClient({}), mockedWriter);
-    writerParams = mockedWriter.write.mock.calls[0][0]
+    await createDeployGraphData(new DeployClient({}), mockedWriter);
+    const writerParams = mockedWriter.write.mock.calls[0][0]
     expect(writerParams.subject).toBe('deploys');
   });
 
   it('writes to a file called deploys', async () => {
-    const deploys = await createDeployGraphData(new DeployClient({}), mockedWriter);
+    await createDeployGraphData(new DeployClient({}), mockedWriter);
     // This is stupid, I don't know how to go all
     // the way back to our first deploy, but 20 pages back is enough for now.
     //
@@ -27,7 +27,7 @@ describe('getDeploys', () => {
     // I don't know how much to fetch
     // Since I am mocking the data each fetch has a response
     // Hence 20 responses
-    writerParams = mockedWriter.write.mock.calls[0][0]
+    const writerParams = mockedWriter.write.mock.calls[0][0]
     expect(Object.values(writerParams.data)[0]).toBe(20);
   });
 });

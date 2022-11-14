@@ -24,13 +24,13 @@ const mockedWriter = { write: jest.fn() };
 describe('exportGraphData', () => {
   it('writes to a file releaseCandidatesPerDeploys.js', async () => {
     await exportGraphData('someDirectory', new DeployClient(), mockedWriter);
-    writerParams = mockedWriter.write.mock.calls[0][0]
+    const writerParams = mockedWriter.write.mock.calls[0][0]
     expect(writerParams.subject).toBe('releaseCandidatesPerDeploys');
   });
 
   it('writes proper structure', async () => {
     await exportGraphData('someDirectory', new DeployClient(), mockedWriter);
-    writerParams = mockedWriter.write.mock.calls[0][0]
+    const writerParams = mockedWriter.write.mock.calls[0][0]
 
     expect(writerParams.data[0][0]).toBe('2022-8');
   });

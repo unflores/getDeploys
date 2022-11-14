@@ -17,8 +17,8 @@ function releaseCandidatesPerDay(candidates) {
 // @params dayCounts {'2022-1-1': 1}
 function makeDayCountsCumulative(dayCounts) {
   const dates = Object.keys(dayCounts).sort((a, b) => dateLib.build(a) - dateLib.build(b));
-  curDate = dates[0];
-  lastDate = dates[dates.length - 1];
+  let curDate = dates[0];
+  const lastDate = dates[dates.length - 1];
   const counts = { ...dayCounts };
   while (dateLib.build(curDate) <= dateLib.build(lastDate)) {
 

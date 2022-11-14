@@ -1,5 +1,5 @@
 function pagesToDeploysPerPeriod(deploys, period = 'month') {
-  bucket = `${period}Bucket`
+  const bucket = `${period}Bucket`;
   return deploys.reduce((deploysPerPeriod, deploy) => {
     if (deploysPerPeriod[deploy[bucket]] === undefined) {
       deploysPerPeriod[deploy[bucket]] = 0;

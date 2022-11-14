@@ -7,8 +7,8 @@ function oldestDeploy(deploys) {
 }
 
 function commitsPerDeploysInMonth(commits, deploys, month) {
-  deploysPerMonth = deploys.filter((a) => a.monthBucket === month).length;
-  commitsPerMonth = commits.filter((a) => a.monthBucket === month).length;
+  const deploysPerMonth = deploys.filter((a) => a.monthBucket === month).length;
+  const commitsPerMonth = commits.filter((a) => a.monthBucket === month).length;
 
   if (deploysPerMonth === 0) {
     return 0;
