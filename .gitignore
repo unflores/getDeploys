@@ -4,3 +4,4 @@ data.js
 data/*
 !data/.keepme
 dist/*
+src/coverage/*
