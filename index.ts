@@ -6,4 +6,14 @@
 // dbSetup()
 
 // app.listen(port)
-console.info(`hai`)
+
+async function start() {
+  let app = buildApp(config)
+  app.listen(process.env.PORT)
+}
+
+if (require.main) {
+  start()
+}
+
+export { start }
