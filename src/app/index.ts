@@ -1,14 +1,16 @@
 import * as express from 'express'
 import * as path from 'path'
 
-let app
+let app: express.Express
 
 type Config = {
   httpasswd: string
   staticDir: string
+  db: {
+    name: string
+    url: string
+  }
 }
-
-// import * as express from 'express';
 
 function buildApp(config: Config) {
   app = express()

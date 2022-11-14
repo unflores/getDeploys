@@ -4,7 +4,11 @@ import * as path from 'path'
 
 let app = buildApp({
   httpasswd: 'test',
-  staticDir: path.resolve(__dirname, 'assets/')
+  staticDir: path.resolve(__dirname, 'assets/'),
+  db: {
+    name: 'dumb-name',
+    url: 'dumb-url'
+  }
 })
 
 describe('app', () => {
