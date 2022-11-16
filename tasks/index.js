@@ -13,20 +13,21 @@ new Promise(async (resolve) => {
   const absDirectory = process.env.PROJECT_DIRECTORY;
   const deployClient = new DeployClient({ authToken, repo, repoOwner });
 
-  if (process.env.npm_config_processor === undefined) {
-    console.error('FAILURE: Must provide flag "processor"');
-    resolve('done');
-    return;
-  }
+  const processors = {
+    getDeploys: 'getDeploys',
+    getReleaseCandidates: 'getReleaseCandidates',
+    getReleaseCandidatesPerDeploys: 'getReleaseCandidatesPerDeploys'
+  };
 
-  if (process.env.npm_config_processor === 'getDeploys') {
+
+  if (process.env.npm_config_processor === processors.getDeploys) {
     await deployProcessor.createDeployGraphData(deployClient, syncSubjectWriter);
-  } else if (process.env.npm_config_processor === 'getReleaseCandidates') {
+  } else if (process.env.npm_config_processor === processors.getReleaseCandidates) {
     await candidatesProcessor.createDeployGraphData(absDirectory, syncSubjectWriter)
-  } else if (process.env.npm_config_processor === 'getReleaseCandidatesPerDeploys') {
+  } else if (process.env.npm_config_processor === processors.getReleaseCandidatesPerDeploys) {
     await candidatesDeploysProcessor.exportGraphData(absDirectory, deployClient, syncSubjectWriter);
   } else {
-    console.error('FAILURE: Must provide a VALID processor.');
+    console.error(`FAILURE: Must provide a VALID processor. Please specifiy --processor=<${Object.keys(processors).join('|')}>`);
     resolve('done');
     return;
   }
