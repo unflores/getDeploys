@@ -2,12 +2,16 @@ import * as express from 'express'
 import * as path from 'path'
 import * as db from './lib/database'
 import * as basicAuth from 'express-basic-auth'
+import { Server } from 'http'
 
-let app: express.Express
+// let app: express.Express
 
 type Config = {
-  password: string
-  staticDir: string
+  server: {
+    password: string
+    staticDir: string
+    port: string
+  }
   db: {
     name: string
     url: string
@@ -15,10 +19,10 @@ type Config = {
 }
 
 function buildApp(config: Config) {
-  app = express()
+  const app = express()
   app.use(
     '/assets/',
-    express.static(path.resolve(config.staticDir))
+    express.static(path.resolve(config.server.staticDir))
   )
 
   db.connect(config.db.url)
@@ -26,7 +30,7 @@ function buildApp(config: Config) {
   app.use((req, res, next) => {
     if (req.path.match(/api\/*/)) {
       basicAuth({
-        users: { admin: config.password },
+        users: { admin: config.server.password },
         challenge: true
       })(req, res, next)
     } else {
@@ -38,4 +42,15 @@ function buildApp(config: Config) {
   return app
 }
 
-export { buildApp }
+async function start(config: Config) {
+  const app = buildApp(config)
+  return app.listen(config.server.port)
+}
+
+async function stop(server: Server) {
+  // await app
+  server.close()
+  db.disconnect()
+}
+
+export { buildApp, stop, start }
