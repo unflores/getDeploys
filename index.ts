@@ -8,7 +8,7 @@ import { buildApp } from './src/app'
 // dbSetup()
 async function start() {
   let app = buildApp({
-    httpasswd: process.env.httpasswd,
+    password: process.env.password,
     staticDir: process.env.staticDir,
     db: {
       name: process.env.dbName,
