@@ -1,25 +1,18 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
-import { buildApp } from './src/app'
+import { start } from './src/app'
 
-// import { logger } from './config/logger'
-// import app from './src/server'
-// import { dbSetup } from './config/mongoose'
-// dbSetup()
-async function start() {
-  let app = buildApp({
-    password: process.env.password,
-    staticDir: process.env.staticDir,
+if (require.main) {
+  start({
+    server: {
+      password: process.env.password,
+      staticDir: process.env.staticDir,
+      port: process.env.port
+    },
     db: {
       name: process.env.dbName,
       url: process.env.dbUrl
     }
-  })
-  app.listen(process.env.listenPort)
-}
 
-if (require.main) {
-  start()
+  )
 }
-
-export { start }
