@@ -18,14 +18,14 @@ interface Config {
   }
 }
 
-function buildApp(config: Config) {
+async function buildApp(config: Config) {
   const app = express()
   app.use(
     '/assets/',
     express.static(path.resolve(config.server.staticDir))
   )
 
-  db.connect(config.db.url)
+  await db.connect(config.db.url)
 
   app.use((req, res, next) => {
     if (req.path.match(/api\/*/)) {
@@ -46,14 +46,14 @@ function buildApp(config: Config) {
 }
 
 async function start(config: Config) {
-  const app = buildApp(config)
+  const app = await buildApp(config)
   return app.listen(config.server.port)
 }
 
 async function stop(server: Server) {
   // await app
   server.close()
-  db.disconnect()
+  await db.disconnect()
 }
 
 export { buildApp, stop, start }

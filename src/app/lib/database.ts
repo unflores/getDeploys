@@ -9,6 +9,9 @@ async function connect(url: string) {
 }
 
 async function disconnect() {
+  if (!db)
+    return
+
   await db.close()
 }
 
