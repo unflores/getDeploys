@@ -1,12 +1,12 @@
 import * as express from 'express'
-import * as path from 'path'
-import * as db from './lib/database'
 import * as basicAuth from 'express-basic-auth'
 import { Server } from 'http'
+import * as path from 'path'
+import * as db from './lib/database'
 
 // let app: express.Express
 
-type Config = {
+interface Config {
   server: {
     password: string
     staticDir: string
@@ -35,8 +35,11 @@ function buildApp(config: Config) {
       })(req, res, next)
     } else {
       next()
-
     }
+  })
+
+  app.use(async (req, res, next) => {
+    await res.send(req.path)
   })
 
   return app

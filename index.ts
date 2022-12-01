@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+
 dotenv.config()
 import { start } from './src/app'
 
@@ -7,7 +8,7 @@ if (require.main) {
     server: {
       password: process.env.password,
       staticDir: process.env.staticDir,
-      port: process.env.port
+      port: process.env.listenPort
     },
     db: {
       name: process.env.dbName,
@@ -15,4 +16,5 @@ if (require.main) {
     }
 
   })
+  console.log(`I see you on ${process.env.listenPort}`)
 }
