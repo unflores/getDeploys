@@ -4,6 +4,9 @@
     "tslint-config-airbnb"
   ],
   "rules": {
+    "interface-name": [
+      false
+    ],
     "semicolon": [
       true,
       "never"
