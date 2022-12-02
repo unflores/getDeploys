@@ -6,6 +6,7 @@ import { Server } from 'http'
 let server: Server
 
 beforeAll(async () => {
+  console.log('starting erver in tsts')
   server = await start({
     server: {
       port: '8080',
@@ -14,7 +15,7 @@ beforeAll(async () => {
     },
     db: {
       name: 'dumb-name',
-      url: 'mongodb://admin:admin@mongo:27017/counts_test'
+      url: 'mongodb://admin:admin@mongo:27017/stats_test'
     }
   })
 })
@@ -23,7 +24,7 @@ afterAll(async () => {
   stop(server)
 })
 
-const encodedPass = Buffer.from('admin:test').toString('base64')
+// const encodedPass = Buffer.from('admin:test').toString('base64')
 
 describe('app', () => {
   describe('static directories', () => {
