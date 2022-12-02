@@ -1,3 +1,5 @@
+
+db = new Mongo().getDB("stats_development");
 db.createUser(
   {
     user: "dev",
@@ -10,6 +12,7 @@ db.createUser(
     ]
   }
 );
+db = new Mongo().getDB("stats_testing");
 
 db.createUser(
   {
