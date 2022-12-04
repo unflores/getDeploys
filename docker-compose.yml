@@ -13,6 +13,9 @@ services:
       MONGO_INITDB_DATABASE: stats
     volumes:
       - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./docker/mongod.conf:/etc/mongod.conf:ro
+    ports:
+      - 27017:27017
   mongo-express:
     image: mongo-express
     restart: always

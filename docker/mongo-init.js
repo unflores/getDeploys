@@ -2,8 +2,8 @@
 db = new Mongo().getDB("stats_development");
 db.createUser(
   {
-    user: "dev",
-    pwd: "dev",
+    user: "conan",
+    pwd: "conan",
     roles: [
       {
         role: "dbOwner",
@@ -16,8 +16,8 @@ db = new Mongo().getDB("stats_testing");
 
 db.createUser(
   {
-    user: "test",
-    pwd: "test",
+    user: "conan",
+    pwd: "conan",
     roles: [
       {
         role: "dbOwner",
