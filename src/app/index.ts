@@ -39,7 +39,11 @@ async function buildApp(config: Config) {
   })
 
   app.use(async (req, res, next) => {
-    await res.send(req.path)
+    if (req.path.match(/api\/*/)) {
+      await res.send(req.path)
+    } else {
+      await res.sendStatus(404)
+    }
   })
 
   return app
@@ -47,7 +51,8 @@ async function buildApp(config: Config) {
 
 async function start(config: Config) {
   const app = await buildApp(config)
-  return app.listen(config.server.port)
+  const server = app.listen(config.server.port)
+  return server
 }
 
 async function stop(server: Server) {

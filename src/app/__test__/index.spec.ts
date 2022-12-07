@@ -6,7 +6,6 @@ import { Server } from 'http'
 let server: Server
 
 beforeAll(async () => {
-  console.log('starting erver in tsts')
   server = await start({
     server: {
       port: '8080',
@@ -15,7 +14,7 @@ beforeAll(async () => {
     },
     db: {
       name: 'dumb-name',
-      url: 'mongodb://admin:admin@mongo:27017/stats_test'
+      url: 'mongodb://conan:conan@localhost:27017/stats_testing'
     }
   })
 })
@@ -24,7 +23,7 @@ afterAll(async () => {
   stop(server)
 })
 
-// const encodedPass = Buffer.from('admin:test').toString('base64')
+const encodedPass = Buffer.from('admin:test').toString('base64')
 
 describe('app', () => {
   describe('static directories', () => {
@@ -56,7 +55,7 @@ describe('app', () => {
       await request(server)
         .get('/api')
         .set('Authorization', 'Basic ' + encodedPass)
-        .expect(404)
+        .expect(200)
     })
   })
 })

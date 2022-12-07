@@ -5,6 +5,8 @@ module.exports = {
   setupFiles: [
     "./jest.setup.js"
   ],
+  // This was pulling tests from dist so I'm ignoring it
+  testPathIgnorePatterns: ["<rootDir>/dist/", "<rootDir>/node_modules/"],
   transform: {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
