@@ -10,7 +10,7 @@ import * as candidatesDeploysProcessor from './processors/getReleaseCandidatesPe
 import { DeployClient } from './DeployClient'
 
 function getProcessor(args: Array<string>): string {
-  const processorArg = args.find((arg) => arg.search('--processor=') > -1))
+  const processorArg = args.find((arg) => arg.search('--processor=') > -1)
   if (processorArg === undefined) {
     return ''
   }

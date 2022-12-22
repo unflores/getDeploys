@@ -1,7 +1,12 @@
-const { Octokit } = require('octokit');
-const { Occurance } = require('./Occurance');
+import { Octokit } from 'octokit'
+import { Occurance } from './Occurance'
 
 class DeployClient {
+
+  repoOwner: string
+  repo: string
+  client: Octokit
+
   constructor({ authToken, repo, repoOwner }) {
     this.repoOwner = repoOwner;
     this.repo = repo;
@@ -32,8 +37,7 @@ class DeployClient {
     return results.data;
   }
 
-  // returns Array<Occurance>
-  async getDeploys() {
+  async getDeploys(): Promise<Array<Occurance>> {
     let pagePromises = [];
     for (let i = 0; i < 20; i++) {
       pagePromises.push(this.#getPage(i));
@@ -47,7 +51,7 @@ class DeployClient {
   }
 }
 
-module.exports = {
+export {
   DeployClient
-};
+}
 
