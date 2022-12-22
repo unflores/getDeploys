@@ -21,7 +21,8 @@
   },
   "include": [
     "./index.ts",
-    "./src/**/*"
+    "./src/**/*",
+    "./tasks/**/*"
   ],
   "exclude": [
     "node_modules",
