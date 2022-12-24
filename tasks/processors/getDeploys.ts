@@ -1,15 +1,7 @@
 import { Occurance } from '../Occurance'
-
+import { Writer } from './'
 type Client = {
   getDeploys: () => Promise<Array<Occurance>>
-}
-
-type Data = {
-  [k: string]: number
-}
-
-type Writer = {
-  write: (params: { subject: string, data: Data }) => void
 }
 
 function pagesToDeploysPerPeriod(deploys: Array<Occurance>, period = 'month') {

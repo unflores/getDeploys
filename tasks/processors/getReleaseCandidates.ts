@@ -1,9 +1,9 @@
-const gitLogReader = require('../gitLogReader');
-const { Occurance } = require('../Occurance');
-const dateLib = require('../../lib/dateLib');
+import * as gitLogReader from '../gitLogReader'
+import { Occurance } from '../Occurance'
+import * as dateLib from '../../lib/dateLib'
+import { Writer } from './'
 
-// @params candidates Occurance
-function releaseCandidatesPerDay(candidates) {
+function releaseCandidatesPerDay(candidates: Array<Occurance>) {
   return candidates.reduce((candidatesPerDay, candidate) => {
     if (candidatesPerDay[candidate.dayBucket] === undefined) {
       candidatesPerDay[candidate.dayBucket] = 0;
@@ -37,7 +37,7 @@ function makeDayCountsCumulative(dayCounts) {
   return counts;
 }
 
-async function createDeployGraphData(absDirectory, writer) {
+async function createDeployGraphData(absDirectory: string, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory);
 
   let data = makeDayCountsCumulative(
