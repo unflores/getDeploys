@@ -8,50 +8,49 @@ class DeployClient {
   client: Octokit
 
   constructor({ authToken, repo, repoOwner }) {
-    this.repoOwner = repoOwner;
-    this.repo = repo;
+    this.repoOwner = repoOwner
+    this.repo = repo
 
     this.client = new Octokit({
       auth: authToken
-    });
+    })
   }
 
   async #getPage(page) {
     // https://docs.github.com/en/rest/deployments/deployments#list-deployments
     const request = `GET /repos/${this.repoOwner}/${this.repo}/deployments`
     const params = {
+      page,
       owner: this.repoOwner,
       repo: this.repo,
       environment: 'production',
-      per_page: 100,
-      page: page
-    };
+      per_page: 100
+    }
 
-    const results = await this.client.request(request, params);
+    const results = await this.client.request(request, params)
 
     if (results.status !== 200) {
-      console.log({ request, params });
-      process.exit();
+      console.log({ request, params })
+      process.exit()
     }
 
-    return results.data;
+    return results.data
   }
 
-  async getDeploys(): Promise<Array<Occurance>> {
-    let pagePromises = [];
+  async getDeploys(): Promise<Occurance[]> {
+    const pagePromises = []
     for (let i = 0; i < 20; i++) {
-      pagePromises.push(this.#getPage(i));
+      pagePromises.push(this.#getPage(i))
     }
 
-    const pages = await Promise.all(pagePromises);
+    const pages = await Promise.all(pagePromises)
 
     return pages.flat()
       .map((params) => ({ ...params, createdAt: params.created_at }))
-      .map((params) => new Occurance(params));
+      .map((params) => new Occurance(params))
   }
 }
 
 export {
   DeployClient
 }
-
