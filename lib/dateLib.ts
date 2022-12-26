@@ -1,29 +1,31 @@
-const moment = require('moment');
+import * as moment from 'moment'
 
-function build(dateString) {
-  return moment(dateString, 'YYYY-M-D');
+function build(dateString: string) {
+  return moment(dateString, 'YYYY-M-D')
 }
 
-function previous(date, unit = 'day') {
+function previous(date: string, unit: moment.DurationInputArg2 = 'day') {
 
-  const newDate = moment(date, 'YYYY-M-D').subtract(1, unit);
+  const newDate = moment(date, 'YYYY-M-D').subtract(1, unit)
 
-  if (unit === 'day')
-    return newDate.format('YYYY-M-D');
-  else
-    return newDate.format('YYYY-M');
+  if (unit === 'day') {
+    return newDate.format('YYYY-M-D')
+  }
+
+  return newDate.format('YYYY-M')
 }
-function next(date, unit = 'day') {
-  const newDate = moment(date, 'YYYY-M-D').add(1, unit);
+function next(date: string, unit: moment.DurationInputArg2 = 'day') {
+  const newDate = moment(date, 'YYYY-M-D').add(1, unit)
 
-  if (unit === 'day')
-    return newDate.format('YYYY-M-D');
-  else
-    return newDate.format('YYYY-M');
+  if (unit === 'day') {
+    return newDate.format('YYYY-M-D')
+  }
+
+  return newDate.format('YYYY-M')
 }
 
-module.exports = {
+export {
   build,
   previous,
   next
-};
+}
