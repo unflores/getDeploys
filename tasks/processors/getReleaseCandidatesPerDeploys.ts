@@ -2,6 +2,8 @@ import { build, next } from '../../lib/dateLib'
 import * as moment from 'moment'
 import * as gitLogReader from '../gitLogReader'
 import { Occurance } from '../Occurance'
+import { Writer } from './'
+import { DeployClient } from '../DeployClient'
 
 function oldestDeploy(deploys: Occurance[]) {
   return deploys.reduce((a, b) => moment(a.createdAt) < moment(b.createdAt) ? a : b)
@@ -35,7 +37,7 @@ function releaseCandidatesPerDeploys({ commits, deploys, endDate }) {
   return candidatesPerDeploys
 }
 
-async function exportGraphData(absDirectory: string, deployClient, writer) {
+async function exportGraphData(absDirectory: string, deployClient: DeployClient, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory)
   const deploys = await deployClient.getDeploys()
   const data = releaseCandidatesPerDeploys(
@@ -45,7 +47,7 @@ async function exportGraphData(absDirectory: string, deployClient, writer) {
   writer.write({ data, subject: 'releaseCandidatesPerDeploys' })
 }
 
-module.exports = {
+export {
   exportGraphData,
   releaseCandidatesPerDeploys
 }
