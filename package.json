@@ -9,7 +9,7 @@
     "build": "npx tsc -d --project ./tsconfig.json",
     "build:watch": "npm run build -- --watch",
     "test": "jest",
-    "process": "node tasks/index.js"
+    "process": "node ./dist/tasks/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "nodemon": "^2.0.20",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",
+    "tslint": "^6.1.3",
     "tslint-config-airbnb": "^5.11.2",
     "typescript": "^4.8.4"
   },

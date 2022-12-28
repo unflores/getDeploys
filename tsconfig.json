@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "moduleResolution": "node",
     "module": "commonjs",
     "outDir": "./dist/",
     "noUnusedLocals": true,
@@ -21,7 +22,8 @@
   },
   "include": [
     "./index.ts",
-    "./src/**/*"
+    "./src/**/*",
+    "./tasks/**/*"
   ],
   "exclude": [
     "node_modules",
