@@ -8,6 +8,7 @@
     "dev": "npx nodemon --inspect ./dist/index.js | bunyan",
     "build": "npx tsc -d --project ./tsconfig.json",
     "build:watch": "npm run build -- --watch",
+    "seed": "node dist/src/app/seed/index.js",
     "test": "jest",
     "process": "node ./dist/tasks/index.js"
   },
@@ -31,6 +32,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-basic-auth": "^1.2.1",
+    "joi": "^17.7.0",
     "moment": "^2.29.4",
     "mongodb": "^4.11.0",
     "octokit": "^2.0.5"
