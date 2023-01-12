@@ -11,9 +11,16 @@ describe('Occurance', () => {
   afterAll(async () => {
     await disconnect()
   })
-  xdescribe('#findByType', () => {
-    it('returns an array of occurances corresponding to the type', async () => {
+  describe('#findByType', () => {
+    beforeEach(async () => {
+      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne({ type: 'otherType', createdAt: new Date(), bucket: '2023-11-11' })
+    })
 
+    it('returns an array of occurances corresponding to the type', async () => {
+      const foundRecords = await Occurances.findByType('deploy')
+      expect(foundRecords.length).toEqual(1)
+      expect(foundRecords[0].type).toEqual('deploy')
     })
   })
 
@@ -31,9 +38,15 @@ describe('Occurance', () => {
     })
   })
 
-  xdescribe('#all', () => {
-    it('returns all occurances', async () => {
+  describe('#all', () => {
+    beforeEach(async () => {
+      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne({ type: 'otherType', createdAt: new Date(), bucket: '2023-11-11' })
+    })
 
+    it('returns all occurances', async () => {
+      const foundRecords = await Occurances.all()
+      expect(foundRecords.length).toEqual(2)
     })
   })
 })

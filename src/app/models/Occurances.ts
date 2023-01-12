@@ -4,13 +4,22 @@ function collection() {
   return getDb().collection('occurances')
 }
 
-async function insertOne(object) {
+async function insertOne(object: { [k: string]: any }) {
   await collection().insertOne(object)
   return object
 }
 
-export {
-  insertOne,
-  collection
+async function findByType(type: string) {
+  return await collection().find({ type }).toArray()
 }
 
+async function all() {
+  return await collection().find({}).toArray()
+}
+
+export {
+  insertOne,
+  collection,
+  findByType,
+  all
+}
