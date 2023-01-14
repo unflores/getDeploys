@@ -1,7 +1,7 @@
-import { Router } from 'express'
+import { static as staticPath, Router } from 'express'
 import * as path from 'path'
-import { static as staticPath } from 'express'
 import * as basicAuth from 'express-basic-auth'
+import * as Occurances from '../models/Occurances'
 
 function buildRoutes(authPassword: string, staticDir: string) {
   const routes = Router()
@@ -18,8 +18,20 @@ function buildRoutes(authPassword: string, staticDir: string) {
     })(req, res, next)
   })
 
-  routes.use('/api/', (req, res) => {
-    res.send(req.path)
+  routes.use('/api/*', async (req, res) => {
+    res.contentType('json')
+    if (req.params[0] === undefined) {
+      return res.send('{}')
+    }
+    const type = req.params[0].replace(/[^a-z]/gi, '')
+
+    const occurences = await (await Occurances.findByType(type)).reduce(
+      (results, doc) => {
+        results[doc.bucket] === undefined ? results[doc.bucket] = 1 : results[doc.bucket] += 1
+        return results
+      }, {}
+    )
+    res.send(occurences)
   })
 
   routes.use('/*', (req, res) => res.sendStatus(404))

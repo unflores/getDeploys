@@ -11,6 +11,7 @@ describe('Occurance', () => {
   afterAll(async () => {
     await disconnect()
   })
+
   describe('#findByType', () => {
     beforeEach(async () => {
       await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })

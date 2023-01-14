@@ -9,7 +9,7 @@ async function insertOne(object: { [k: string]: any }) {
   return object
 }
 
-async function findByType(type: string) {
+async function findByType(type: string): Promise<{ [k: string]: any }> {
   return await collection().find({ type }).toArray()
 }
 

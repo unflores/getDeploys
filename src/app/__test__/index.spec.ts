@@ -2,6 +2,7 @@ import * as request from 'supertest'
 import { start, stop } from '../index'
 import * as path from 'path'
 import { Server } from 'http'
+import * as Occurances from '../models/Occurances'
 
 let server: Server
 
@@ -17,6 +18,10 @@ beforeAll(async () => {
       url: 'mongodb://conan:conan@localhost:27017/stats_testing'
     }
   })
+})
+
+beforeEach(async () => {
+  await Occurances.collection().deleteMany({})
 })
 
 afterAll(async () => {
@@ -44,18 +49,43 @@ describe('app', () => {
     })
   })
 
-  describe('api', () => {
+  describe('httpass', () => {
     it('blocks when no password', async () => {
       await request(server)
         .get('/api')
         .expect(401)
     })
 
-    it('protects permits with password', async () => {
+    it('protects with password', async () => {
       await request(server)
         .get('/api')
-        .set('Authorization', 'Basic ' + encodedPass)
-        .expect(200)
+        .set('Authorization', `Basic ${encodedPass}`)
+        .expect(404)
+    })
+  })
+
+  describe('api', () => {
+    beforeEach(async () => {
+      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-20', createdAt: new Date() })
+      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
+      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
+    })
+
+    describe('occurances', () => {
+
+      const getResponse = async () => {
+        return await request(server)
+          .get('/api/deploy')
+          .set('Authorization', `Basic ${encodedPass}`)
+      }
+
+      it('returns occurances', async () => {
+        const response = await getResponse()
+
+        const count = response.body['2022-10-19']
+        expect(response.status).toEqual(200)
+        expect(count).toEqual(2)
+      })
     })
   })
 })
