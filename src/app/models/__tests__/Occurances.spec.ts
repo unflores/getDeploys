@@ -15,7 +15,9 @@ describe('Occurance', () => {
   describe('#findByType', () => {
     beforeEach(async () => {
       await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
-      await Occurances.insertOne({ type: 'otherType', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne(
+        { type: 'contributer', createdAt: new Date(), bucket: '2023-11-11' }
+      )
     })
 
     it('returns an array of occurances corresponding to the type', async () => {
@@ -26,14 +28,38 @@ describe('Occurance', () => {
   })
 
   describe('#insertOne', () => {
+    describe('when bad type', () => {
+      it('throws exception with validation messages', async () => {
+        let error
+
+        try {
+          await Occurances.insertOne({})
+        } catch (e) {
+          error = e
+        }
+
+        const bucketError = error.details.find((invalid) => invalid.context.label === 'bucket')
+        const typeError = error.details.find((invalid) => invalid.context.label === 'type')
+        expect(bucketError).toBeTruthy()
+        expect(typeError).toBeTruthy()
+      })
+    })
+
+    describe('when NO date', () => {
+      it('defaults to current date', async () => {
+        const inserted = await Occurances.insertOne({ type: 'deploy', bucket: '2023-11-11' })
+        expect(inserted.createdAt).toBeTruthy()
+      })
+    })
+
     it('returns inserted occurance', async () => {
-      const document = { createdAt: new Date(), bucket: '2023-11-11' }
+      const document = { type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' }
       const inserted = await Occurances.insertOne(document)
       expect(inserted).toEqual(inserted)
     })
 
     it('inserts record', async () => {
-      await Occurances.insertOne({ createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
       const count = await Occurances.collection().countDocuments()
       expect(count).toEqual(1)
     })
@@ -42,7 +68,7 @@ describe('Occurance', () => {
   describe('#all', () => {
     beforeEach(async () => {
       await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
-      await Occurances.insertOne({ type: 'otherType', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne({ type: 'contributer', createdAt: new Date(), bucket: '2023-11-11' })
     })
 
     it('returns all occurances', async () => {
