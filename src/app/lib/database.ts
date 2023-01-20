@@ -7,14 +7,15 @@ class DatabaseConnectionTimeout extends Error {
   }
 }
 
-let db: MongoClient
+let client: MongoClient
 
 async function connect(url: string) {
   try {
-    db = await MongoClient.connect(
+    client = await MongoClient.connect(
       url,
       { serverSelectionTimeoutMS: 100, socketTimeoutMS: 30 }
     )
+
   } catch (error) {
     if (error instanceof MongoServerSelectionError) {
       throw new DatabaseConnectionTimeout('Failed connection', error.stack)
@@ -23,14 +24,15 @@ async function connect(url: string) {
 }
 
 async function disconnect() {
-  if (!db)
+  if (!client) {
     return
+  }
 
-  await db.close()
+  await client.close()
 }
 
 function getDb() {
-  return db
+  return client.db()
 }
 
 export {
