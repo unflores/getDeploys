@@ -32,7 +32,7 @@ function buildRoutes(authPassword: string, staticDir: string) {
       },
       {}
     )
-    await res.send(occurances)
+    res.send(occurances)
   })
 
   routes.use('/*', (req, res) => res.sendStatus(404))
