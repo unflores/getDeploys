@@ -9,8 +9,21 @@ cp .env.example .env
 # update .env info
 cp contributers.js.example data/contributers.js # this would come from your organization
 cp history.js.example data/history.js # this would come from your organization
+# Install libs
 npm install
-npm start
+npm run processor --processor=<your processor>
+xdg-open './graph.html'
+```
+
+
+# development
+```
+# build
+npm run build:watch
+# development
+npm run dev
+# run tests
+npm test
 ```
 
 
