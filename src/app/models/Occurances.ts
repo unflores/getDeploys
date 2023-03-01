@@ -1,9 +1,17 @@
 import { getDb } from '../lib/database'
 import * as Joi from 'joi'
 
+interface Occurance {
+  type: 'deploy' | 'contributer',
+  bucket: string,
+  occurredAt: Date,
+  createdAt: Date
+}
+
 const schema = Joi.object({
   type: Joi.string().allow('deploy', 'contributer').only().required(),
   bucket: Joi.string().pattern(/[0-9]{4}-[0-9]{2}-[0-9]{2}/).required(),
+  occurredAt: Joi.date().required(),
   createdAt: Joi.date().default(() => new Date()),
 })
 
@@ -29,5 +37,6 @@ export {
   insertOne,
   collection,
   findByType,
-  all
+  all,
+  Occurance
 }
