@@ -24,7 +24,6 @@ function buildRoutes(authPassword: string, staticDir: string) {
       return res.send('{}')
     }
     const type = req.params[0].replace(/[^a-z]/gi, '')
-
     const occurances = (await Occurances.findByType(type)).reduce(
       (results, doc) => {
         results[doc.bucket] === undefined ? results[doc.bucket] = 1 : results[doc.bucket] += 1
@@ -32,6 +31,7 @@ function buildRoutes(authPassword: string, staticDir: string) {
       },
       {}
     )
+
     res.send(occurances)
   })
 

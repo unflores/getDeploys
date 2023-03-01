@@ -67,9 +67,15 @@ describe('app', () => {
 
   describe('api', () => {
     beforeEach(async () => {
-      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-20' }))
-      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-19' }))
-      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-19' }))
+      const occuranceParams = [
+        { type: 'deploy' as 'deploy', bucket: '2022-10-20' },
+        { type: 'deploy' as 'deploy', bucket: '2022-10-19' },
+        { type: 'contributer' as 'contributer', bucket: '2022-10-19' },
+      ]
+
+      for (const params of occuranceParams) {
+        await Occurances.insertOne(occuranceFactory.build(params))
+      }
     })
 
     describe('occurances', () => {
@@ -82,10 +88,9 @@ describe('app', () => {
 
       it('returns occurances', async () => {
         const response = await getResponse()
-
         const count = response.body['2022-10-19']
         expect(response.status).toEqual(200)
-        expect(count).toEqual(2)
+        expect(count).toEqual(1)
       })
     })
   })
