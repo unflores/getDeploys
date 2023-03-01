@@ -3,6 +3,7 @@ import { start, stop } from '../index'
 import * as path from 'path'
 import { Server } from 'http'
 import * as Occurances from '../models/Occurances'
+import { occuranceFactory } from '../models/__tests__/occuranceFactory'
 
 let server: Server
 
@@ -66,9 +67,9 @@ describe('app', () => {
 
   describe('api', () => {
     beforeEach(async () => {
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-20', createdAt: new Date() })
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
+      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-20' }))
+      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-19' }))
+      await Occurances.insertOne(occuranceFactory.build({ bucket: '2022-10-19' }))
     })
 
     describe('occurances', () => {
