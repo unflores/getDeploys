@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
-import * as syncSubjectWriter from '../lib/syncSubjectWriter'
+import { SyncSubjectWriter } from '../lib/syncSubjectWriter'
 import * as deployProcessor from './processors/getDeploys'
 import * as candidatesProcessor from './processors/getReleaseCandidates'
 import * as candidatesDeploysProcessor from './processors/getReleaseCandidatesPerDeploys'
@@ -32,6 +32,8 @@ new Promise(async (resolve) => {
     getReleaseCandidates: 'getReleaseCandidates',
     getReleaseCandidatesPerDeploys: 'getReleaseCandidatesPerDeploys'
   }
+
+  const syncSubjectWriter = new SyncSubjectWriter()
 
   if (processor === processors.getDeploys) {
     await deployProcessor.createDeployGraphData(deployClient, syncSubjectWriter)
