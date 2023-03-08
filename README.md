@@ -26,4 +26,8 @@ npm run dev
 npm test
 ```
 
+# environment
+
+* DATA_EXPORT_FILE_TYPE - use `js` for local files and `json` for external usage
+
 
