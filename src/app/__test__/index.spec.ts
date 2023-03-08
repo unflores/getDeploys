@@ -3,6 +3,7 @@ import { start, stop } from '../index'
 import * as path from 'path'
 import { Server } from 'http'
 import * as Occurances from '../models/Occurances'
+import { occuranceFactory } from '../models/__tests__/occuranceFactory'
 
 let server: Server
 
@@ -66,25 +67,30 @@ describe('app', () => {
 
   describe('api', () => {
     beforeEach(async () => {
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-20', createdAt: new Date() })
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
-      await Occurances.insertOne({ type: 'deploy', bucket: '2022-10-19', createdAt: new Date() })
+      const occuranceParams = [
+        { type: 'deploy' as const, bucket: '2022-10-20' },
+        { type: 'deploy' as const, bucket: '2022-10-19' },
+        { type: 'contributer' as const, bucket: '2022-10-19' },
+      ]
+
+      for (const params of occuranceParams) {
+        await Occurances.insertOne(occuranceFactory.build(params))
+      }
     })
 
     describe('occurances', () => {
 
       const getResponse = async () => {
         return await request(server)
-          .get('/api/deploy')
+          .get('/api/occurances/deploy')
           .set('Authorization', `Basic ${encodedPass}`)
       }
 
       it('returns occurances', async () => {
         const response = await getResponse()
-
         const count = response.body['2022-10-19']
         expect(response.status).toEqual(200)
-        expect(count).toEqual(2)
+        expect(count).toEqual(1)
       })
     })
   })

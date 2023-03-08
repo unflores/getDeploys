@@ -1,5 +1,6 @@
 import { connect, disconnect } from '../../lib/database'
 import * as Occurances from '../Occurances'
+import { occuranceFactory } from './occuranceFactory'
 
 describe('Occurance', () => {
   beforeAll(async () => {
@@ -14,10 +15,8 @@ describe('Occurance', () => {
 
   describe('#findByType', () => {
     beforeEach(async () => {
-      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
-      await Occurances.insertOne(
-        { type: 'contributer', createdAt: new Date(), bucket: '2023-11-11' }
-      )
+      await Occurances.insertOne(occuranceFactory.build({ type: 'deploy' }))
+      await Occurances.insertOne(occuranceFactory.build({ type: 'contributer' }))
     })
 
     it('returns an array of occurances corresponding to the type', async () => {
@@ -47,19 +46,19 @@ describe('Occurance', () => {
 
     describe('when NO date', () => {
       it('defaults to current date', async () => {
-        const inserted = await Occurances.insertOne({ type: 'deploy', bucket: '2023-11-11' })
+        const inserted = await Occurances.insertOne(occuranceFactory.build({ createdAt: undefined }))
         expect(inserted.createdAt).toBeTruthy()
       })
     })
 
     it('returns inserted occurance', async () => {
-      const document = { type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' }
+      const document = occuranceFactory.build()
       const inserted = await Occurances.insertOne(document)
       expect(inserted).toEqual(inserted)
     })
 
     it('inserts record', async () => {
-      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne(occuranceFactory.build())
       const count = await Occurances.collection().countDocuments()
       expect(count).toEqual(1)
     })
@@ -67,8 +66,8 @@ describe('Occurance', () => {
 
   describe('#all', () => {
     beforeEach(async () => {
-      await Occurances.insertOne({ type: 'deploy', createdAt: new Date(), bucket: '2023-11-11' })
-      await Occurances.insertOne({ type: 'contributer', createdAt: new Date(), bucket: '2023-11-11' })
+      await Occurances.insertOne(occuranceFactory.build({ type: 'deploy' }))
+      await Occurances.insertOne(occuranceFactory.build({ type: 'contributer' }))
     })
 
     it('returns all occurances', async () => {

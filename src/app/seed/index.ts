@@ -1,6 +1,7 @@
 import * as Occurances from '../models/Occurances'
 import { connect, disconnect } from '../lib/database'
 import * as dotenv from 'dotenv'
+import { occuranceFactory } from '../models/__tests__/occuranceFactory'
 
 dotenv.config()
 
@@ -10,11 +11,11 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 const occurancesAtts = [
-  { bucket: '2022-10-11', createdAt: new Date(), type: 'deploy' },
-  { bucket: '2022-10-10', createdAt: new Date(), type: 'deploy' },
-  { bucket: '2022-10-10', createdAt: new Date(), type: 'deploy' },
-  { bucket: '2022-10-14', createdAt: new Date(), type: 'deploy' },
-  { bucket: '2022-10-01', createdAt: new Date(), type: 'contributer' },
+  { bucket: '2022-10-11', type: 'deploy' as const },
+  { bucket: '2022-10-10', type: 'deploy' as const },
+  { bucket: '2022-10-10', type: 'deploy' as const },
+  { bucket: '2022-10-14', type: 'deploy' as const },
+  { bucket: '2022-10-01', type: 'contributer' as const },
 ]
 
 new Promise(async (resolve, _reject) => {
@@ -23,7 +24,9 @@ new Promise(async (resolve, _reject) => {
   await Occurances.collection().deleteMany({})
 
   console.log('Start inserting')
-  await Promise.all(occurancesAtts.map((atts) => Occurances.insertOne(atts)))
+  await Promise.all(
+    occurancesAtts.map((atts) => Occurances.insertOne(occuranceFactory.build(atts)))
+  )
 
   console.log(`Inserted ${occurancesAtts.length} occurances.`)
   await disconnect()
