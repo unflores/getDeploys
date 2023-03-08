@@ -6,7 +6,7 @@ interface WriteParams {
 }
 
 interface Options {
-  type?: 'js' | 'json'
+  type?: string
 }
 class SyncSubjectWriter {
 
