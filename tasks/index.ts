@@ -33,7 +33,9 @@ new Promise(async (resolve) => {
     getReleaseCandidatesPerDeploys: 'getReleaseCandidatesPerDeploys'
   }
 
-  const syncSubjectWriter = new SyncSubjectWriter()
+  const options = { type: process.env.DATA_EXPORT_FILE_TYPE || 'js' }
+
+  const syncSubjectWriter = new SyncSubjectWriter(options)
 
   if (processor === processors.getDeploys) {
     await deployProcessor.createDeployGraphData(deployClient, syncSubjectWriter)
