@@ -5,6 +5,7 @@ module.exports = {
   setupFiles: [
     "./jest.setup.js"
   ],
+  testRegex: "(/__test(s?)__/.*(test|spec))\\.[jt]s$",
   // This was pulling tests from dist so I'm ignoring it
   testPathIgnorePatterns: ["<rootDir>/dist/", "<rootDir>/node_modules/"],
   transform: {
