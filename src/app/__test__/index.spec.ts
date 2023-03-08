@@ -68,9 +68,9 @@ describe('app', () => {
   describe('api', () => {
     beforeEach(async () => {
       const occuranceParams = [
-        { type: 'deploy' as 'deploy', bucket: '2022-10-20' },
-        { type: 'deploy' as 'deploy', bucket: '2022-10-19' },
-        { type: 'contributer' as 'contributer', bucket: '2022-10-19' },
+        { type: 'deploy' as const, bucket: '2022-10-20' },
+        { type: 'deploy' as const, bucket: '2022-10-19' },
+        { type: 'contributer' as const, bucket: '2022-10-19' },
       ]
 
       for (const params of occuranceParams) {
@@ -82,7 +82,7 @@ describe('app', () => {
 
       const getResponse = async () => {
         return await request(server)
-          .get('/api/deploy')
+          .get('/api/occurances/deploy')
           .set('Authorization', `Basic ${encodedPass}`)
       }
 

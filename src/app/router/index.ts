@@ -18,7 +18,7 @@ function buildRoutes(authPassword: string, staticDir: string) {
     })(req, res, next)
   })
 
-  routes.use('/api/*', async (req, res) => {
+  routes.use('/api/occurances/*', async (req, res) => {
     res.contentType('json')
     if (req.params[0] === undefined) {
       return res.send('{}')
