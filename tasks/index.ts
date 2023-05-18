@@ -26,7 +26,6 @@ new Promise(async (resolve) => {
   const deployClient = new DeployClient({ authToken, repo, repoOwner })
 
   const processor = getProcessor(process.argv)
-
   const processors = {
     getDeploys: 'getDeploys',
     getReleaseCandidates: 'getReleaseCandidates',
