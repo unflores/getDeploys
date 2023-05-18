@@ -1,10 +1,10 @@
 import { Occurance } from '../Occurance'
 import { Writer } from './'
 type Client = {
-  getDeploys: () => Promise<Array<Occurance>>
+  getDeploys: () => Promise<Occurance[]>
 }
 
-function pagesToDeploysPerPeriod(deploys: Array<Occurance>, period = 'month') {
+function pagesToDeploysPerPeriod(deploys: Occurance[], period = 'month') {
   const bucket = `${period}Bucket`
   return deploys.reduce((deploysPerPeriod, deploy) => {
     if (deploysPerPeriod[deploy[bucket]] === undefined) {
@@ -26,4 +26,4 @@ async function createDeployGraphData(deployClient: Client, syncSubjectWriter: Wr
 
 export {
   createDeployGraphData
-};
+}
