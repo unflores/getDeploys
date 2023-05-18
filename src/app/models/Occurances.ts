@@ -1,8 +1,9 @@
 import { getDb } from '../lib/database'
 import * as Joi from 'joi'
+import { Filter } from 'mongodb'
 
 interface Occurance {
-  type: 'deploy' | 'contributer',
+  type: string, // 'deploy' | 'contributer',
   bucket: string,
   occurredAt: Date,
   createdAt: Date
@@ -16,7 +17,7 @@ const schema = Joi.object({
 })
 
 function collection() {
-  return getDb().collection('occurances')
+  return getDb().collection<Occurance>('occurances')
 }
 
 async function insertOne(object: { [k: string]: any }) {
@@ -25,8 +26,9 @@ async function insertOne(object: { [k: string]: any }) {
   return insertable
 }
 
-async function findByType(type: string): Promise<{ [k: string]: any }> {
-  return await collection().find({ type }).toArray()
+async function findByType(type: string): Promise<Occurance[]> {
+  const filter: Filter<Occurance> = { type }
+  return await collection().find(filter).toArray()
 }
 
 async function all() {
