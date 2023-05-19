@@ -68,9 +68,9 @@ describe('app', () => {
   describe('api', () => {
     beforeEach(async () => {
       const occuranceParams = [
-        { type: 'deploy' as const, bucket: '2022-10-20' },
-        { type: 'deploy' as const, bucket: '2022-10-19' },
-        { type: 'contributer' as const, bucket: '2022-10-19' },
+        { type: 'deploy', bucket: '2022-10-20' },
+        { type: 'deploy', bucket: '2022-10-19' },
+        { type: 'contributer', bucket: '2022-10-19' },
       ]
 
       for (const params of occuranceParams) {
