@@ -11,11 +11,11 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 const occurancesAtts = [
-  { bucket: '2022-10-11', type: 'deploy' as const },
-  { bucket: '2022-10-10', type: 'deploy' as const },
-  { bucket: '2022-10-10', type: 'deploy' as const },
-  { bucket: '2022-10-14', type: 'deploy' as const },
-  { bucket: '2022-10-01', type: 'contributer' as const },
+  { bucket: '2022-10-11', type: 'deploy' },
+  { bucket: '2022-10-10', type: 'deploy' },
+  { bucket: '2022-10-10', type: 'deploy' },
+  { bucket: '2022-10-14', type: 'deploy' },
+  { bucket: '2022-10-01', type: 'contributer' },
 ]
 
 new Promise(async (resolve, _reject) => {
