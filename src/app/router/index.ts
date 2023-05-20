@@ -21,9 +21,10 @@ function buildRoutes(authPassword: string, staticDir: string) {
   routes.use('/api/occurances/*', async (req, res) => {
     res.contentType('json')
     if (req.params[0] === undefined) {
-      return await res.send('{}')
+      return res.send('{}')
     }
-    const type = req.params[0].replace(/[^a-z]/gi, '')
+
+    const type = req.params[0].replace(/[^a-z]/gi, '') as string
     const occurances = (await Occurances.findByType(type)).reduce(
       (results, doc) => {
         results[doc.bucket] === undefined ? results[doc.bucket] = 1 : results[doc.bucket] += 1
@@ -32,7 +33,7 @@ function buildRoutes(authPassword: string, staticDir: string) {
       {}
     )
 
-    await res.send(occurances)
+    res.send(occurances)
   })
 
   routes.use('/*', (req, res) => res.sendStatus(404))
