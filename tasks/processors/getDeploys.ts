@@ -1,10 +1,6 @@
-import { Occurance } from '../Occurance'
-import { Writer } from './'
-type Client = {
-  getDeploys: () => Promise<Occurance[]>
-}
+import { Writer, DeployClient, Bucket } from './types'
 
-function pagesToDeploysPerPeriod(deploys: Occurance[], period = 'month') {
+function pagesToDeploysPerPeriod(deploys: Bucket[], period = 'month') {
   const bucket = `${period}Bucket`
   return deploys.reduce((deploysPerPeriod, deploy) => {
     if (deploysPerPeriod[deploy[bucket]] === undefined) {
@@ -14,10 +10,10 @@ function pagesToDeploysPerPeriod(deploys: Occurance[], period = 'month') {
     deploysPerPeriod[deploy[bucket]] += 1
 
     return deploysPerPeriod
-  }, {})
+  },                    {})
 }
 
-async function createDeployGraphData(deployClient: Client, syncSubjectWriter: Writer) {
+async function createDeployGraphData(deployClient: DeployClient, syncSubjectWriter: Writer) {
   const deploys = await deployClient.getDeploys()
 
   const deploysPerPeriod = pagesToDeploysPerPeriod(deploys)
