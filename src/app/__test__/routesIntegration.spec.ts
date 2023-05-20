@@ -1,24 +1,10 @@
 import * as request from 'supertest'
-import { start, stop } from '../index'
-import * as path from 'path'
-import { Server } from 'http'
+import * as testServer from './testServer'
 import * as Occurances from '../models/Occurances'
 import { occuranceFactory } from '../models/__tests__/occuranceFactory'
 
-let server: Server
-
 beforeAll(async () => {
-  server = await start({
-    server: {
-      port: '8080',
-      password: 'test',
-      staticDir: path.resolve(__dirname, 'assets/'),
-    },
-    db: {
-      name: 'dumb-name',
-      url: 'mongodb://conan:conan@localhost:27017/stats_testing'
-    }
-  })
+  await testServer.start()
 })
 
 beforeEach(async () => {
@@ -26,7 +12,7 @@ beforeEach(async () => {
 })
 
 afterAll(async () => {
-  stop(server)
+  testServer.stop()
 })
 
 const encodedPass = Buffer.from('admin:test').toString('base64')
@@ -45,10 +31,9 @@ describe('integration', () => {
       }
     })
 
-    describe('occurances', () => {
-
+    describe('GET occurances', () => {
       const getResponse = async () => {
-        return await request(server)
+        return await request(testServer.server)
           .get('/api/occurances/deploy')
           .set('Authorization', `Basic ${encodedPass}`)
       }
@@ -60,5 +45,21 @@ describe('integration', () => {
         expect(count).toEqual(1)
       })
     })
+
+    describe('POST occurances', () => {
+      const getResponse = async () => {
+        return await request(testServer.server)
+          .get('/api/occurances/deploy')
+          .set('Authorization', `Basic ${encodedPass}`)
+      }
+
+      it('returns occurances', async () => {
+        const response = await getResponse()
+        const count = response.body['2022-10-19']
+        expect(response.status).toEqual(200)
+        expect(count).toEqual(1)
+      })
+    })
+
   })
 })
