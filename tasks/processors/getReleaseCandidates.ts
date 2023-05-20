@@ -1,9 +1,8 @@
 import * as gitLogReader from '../gitLogReader'
-import { Occurance } from '../Occurance'
 import * as dateLib from '../../lib/dateLib'
-import { Writer } from './'
+import { Writer, Bucket } from './types'
 
-function releaseCandidatesPerDay(candidates: Occurance[]) {
+function releaseCandidatesPerDay(candidates: Bucket[]) {
   return candidates.reduce((candidatesPerDay, candidate) => {
     if (candidatesPerDay[candidate.dayBucket] === undefined) {
       candidatesPerDay[candidate.dayBucket] = 0
@@ -11,7 +10,7 @@ function releaseCandidatesPerDay(candidates: Occurance[]) {
 
     candidatesPerDay[candidate.dayBucket] += 1
     return candidatesPerDay
-  }, {})
+  },                       {})
 }
 
 type DayCounts = {

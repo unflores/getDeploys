@@ -1,15 +1,13 @@
 import { build, next } from '../../lib/dateLib'
 import * as moment from 'moment'
 import * as gitLogReader from '../gitLogReader'
-import { Occurance } from '../Occurance'
-import { Writer } from './'
-import { DeployClient } from '../DeployClient'
+import { Writer, DeployClient, Bucket } from './types'
 
-function oldestDeploy(deploys: Occurance[]) {
+function oldestDeploy(deploys: Bucket[]) {
   return deploys.reduce((a, b) => moment(a.createdAt) < moment(b.createdAt) ? a : b)
 }
 
-function commitsPerDeploysInMonth(commits: Occurance[], deploys: Occurance[], month: string) {
+function commitsPerDeploysInMonth(commits: Bucket[], deploys: Bucket[], month: string) {
   const deploysPerMonth = deploys.filter((a) => a.monthBucket === month).length
   const commitsPerMonth = commits.filter((a) => a.monthBucket === month).length
 
