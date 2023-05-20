@@ -3,7 +3,6 @@ import { start, stop } from '../index'
 import * as path from 'path'
 import { Server } from 'http'
 import * as Occurances from '../models/Occurances'
-import { occuranceFactory } from '../models/__tests__/occuranceFactory'
 
 let server: Server
 
@@ -31,7 +30,7 @@ afterAll(async () => {
 
 const encodedPass = Buffer.from('admin:test').toString('base64')
 
-describe('app', () => {
+describe('app setup', () => {
   describe('static directories', () => {
     describe('missing file', () => {
       it('returns 404', async () => {
@@ -65,33 +64,4 @@ describe('app', () => {
     })
   })
 
-  describe('api', () => {
-    beforeEach(async () => {
-      const occuranceParams = [
-        { type: 'deploy', bucket: '2022-10-20' },
-        { type: 'deploy', bucket: '2022-10-19' },
-        { type: 'contributer', bucket: '2022-10-19' },
-      ]
-
-      for (const params of occuranceParams) {
-        await Occurances.insertOne(occuranceFactory.build(params))
-      }
-    })
-
-    describe('occurances', () => {
-
-      const getResponse = async () => {
-        return await request(server)
-          .get('/api/occurances/deploy')
-          .set('Authorization', `Basic ${encodedPass}`)
-      }
-
-      it('returns occurances', async () => {
-        const response = await getResponse()
-        const count = response.body['2022-10-19']
-        expect(response.status).toEqual(200)
-        expect(count).toEqual(1)
-      })
-    })
-  })
 })
