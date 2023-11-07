@@ -29,11 +29,11 @@ describe('Occurance', () => {
   describe('#insertOne', () => {
     describe('when bad type', () => {
       it('throws exception with validation messages', async () => {
-        let error
+        let error: any
 
         try {
           await Occurances.insertOne({})
-        } catch (e) {
+        } catch (e: any) {
           error = e
         }
 

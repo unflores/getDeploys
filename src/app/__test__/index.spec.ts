@@ -26,7 +26,7 @@ beforeEach(async () => {
 })
 
 afterAll(async () => {
-  stop(server)
+  await stop(server)
 })
 
 const encodedPass = Buffer.from('admin:test').toString('base64')
@@ -88,7 +88,8 @@ describe('app', () => {
 
       it('returns occurances', async () => {
         const response = await getResponse()
-        const count = response.body['2022-10-19']
+
+        const count = (response.body as string)['2022-10-19']
         expect(response.status).toEqual(200)
         expect(count).toEqual(1)
       })

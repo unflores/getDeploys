@@ -3,9 +3,9 @@ import * as Joi from 'joi'
 import { Filter } from 'mongodb'
 
 interface Occurance {
-  type: string, // 'deploy' | 'contributer',
-  bucket: string,
-  occurredAt: Date,
+  type: string // 'deploy' | 'contributer',
+  bucket: string
+  occurredAt: Date
   createdAt: Date
 }
 

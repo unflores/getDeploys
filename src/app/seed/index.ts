@@ -18,7 +18,7 @@ const occurancesAtts = [
   { bucket: '2022-10-01', type: 'contributer' },
 ]
 
-new Promise(async (resolve, _reject) => {
+new Promise(async (resolve) => {
   await connect(process.env.dbUrl)
   console.log('Clear db')
   await Occurances.collection().deleteMany({})
@@ -31,4 +31,4 @@ new Promise(async (resolve, _reject) => {
   console.log(`Inserted ${occurancesAtts.length} occurances.`)
   await disconnect()
   resolve('Finished')
-}).then((results) => console.log(results)).catch((reason) => console.log({ reason }))
+}).then((results) => console.log(results)).catch((reason) => console.log(reason))
