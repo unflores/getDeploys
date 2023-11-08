@@ -29,12 +29,12 @@ describe('Occurance', () => {
   describe('#insertOne', () => {
     describe('when bad type', () => {
       it('throws exception with validation messages', async () => {
-        let error: any
+        let error: Occurances.ValidationError
 
         try {
           await Occurances.insertOne({})
-        } catch (e: any) {
-          error = e
+        } catch (e) {
+          error = e as Occurances.ValidationError
         }
 
         const bucketError = error.details.find((invalid) => invalid.context.label === 'bucket')
@@ -46,7 +46,9 @@ describe('Occurance', () => {
 
     describe('when NO date', () => {
       it('defaults to current date', async () => {
-        const inserted = await Occurances.insertOne(occuranceFactory.build({ createdAt: undefined }))
+        const inserted = await Occurances.insertOne(
+          occuranceFactory.build({ createdAt: undefined })
+        )
         expect(inserted.createdAt).toBeTruthy()
       })
     })

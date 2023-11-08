@@ -89,7 +89,7 @@ describe('app', () => {
       it('returns occurances', async () => {
         const response = await getResponse()
 
-        const count = (response.body as string)['2022-10-19']
+        const count = (response.body as string)['2022-10-19'] as number
         expect(response.status).toEqual(200)
         expect(count).toEqual(1)
       })

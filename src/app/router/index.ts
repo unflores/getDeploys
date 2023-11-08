@@ -40,4 +40,7 @@ function buildRoutes(authPassword: string, staticDir: string) {
   return routes
 }
 
+const asyncRoute = route: Promise => (req, res, next = console.error) =>
+  Promise.resolve(route(req, res)).catch(next)
+
 export { buildRoutes }
