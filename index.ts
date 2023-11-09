@@ -12,7 +12,8 @@ if (require.main) {
     },
     db: {
       name: process.env.dbName,
-      url: process.env.dbUrl
+      url: process.env.dbUrl,
+      timeout: parseInt(process.env.dbSelectionTimeout, 10)
     }
 
   })

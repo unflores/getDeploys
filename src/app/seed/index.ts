@@ -19,7 +19,7 @@ const occurancesAtts = [
 ]
 
 const seedDocs = async () => {
-  await connect(process.env.dbUrl)
+  await connect(process.env.dbUrl, parseInt(process.env.dbSelectionTimeout, 10))
   console.log('Clear db')
   await Occurances.collection().deleteMany({})
 

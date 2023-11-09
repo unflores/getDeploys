@@ -15,13 +15,14 @@ interface Config {
   db: {
     name: string
     url: string
+    timeout: number
   }
 }
 
 async function buildApp(config: Config) {
   const app = express()
 
-  await db.connect(config.db.url)
+  await db.connect(config.db.url, config.db.timeout)
 
   const { password, staticDir } = config.server
   app.use(buildRoutes(password, staticDir))
