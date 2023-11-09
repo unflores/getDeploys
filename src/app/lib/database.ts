@@ -1,7 +1,7 @@
 import { MongoClient, MongoServerSelectionError } from 'mongodb'
 
 class DatabaseConnectionTimeout extends Error {
-  constructor(msg, stack) {
+  constructor(msg: string, stack: string) {
     super(msg)
     this.stack = stack
   }

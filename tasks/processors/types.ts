@@ -3,7 +3,7 @@ type Data = {
 } | (string | number)[][]
 
 export type Writer = {
-  write: (params: { subject: string, data: Data }) => void
+  write: (params: { subject: string; data: Data }) => void
 }
 
 export type DeployClient = {

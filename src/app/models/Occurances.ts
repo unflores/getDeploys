@@ -1,15 +1,16 @@
 import { getDb } from '../lib/database'
 import * as Joi from 'joi'
+import {ValidationError} from 'joi'
 import { Filter } from 'mongodb'
 
 interface Occurance {
-  type: string, // 'deploy' | 'contributer',
-  bucket: string,
-  occurredAt: Date,
+  type: string // 'deploy' | 'contributer',
+  bucket: string
+  occurredAt: Date
   createdAt: Date
 }
 
-const schema = Joi.object({
+const schema = Joi.object<Occurance>({
   type: Joi.string().allow('deploy', 'contributer').only().required(),
   bucket: Joi.string().pattern(/[0-9]{4}-[0-9]{2}-[0-9]{2}/).required(),
   occurredAt: Joi.date().required(),
@@ -40,5 +41,6 @@ export {
   collection,
   findByType,
   all,
-  Occurance
+  Occurance,
+  ValidationError
 }
