@@ -13,7 +13,7 @@
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "process": "node ./dist/tasks/index.js"
   },
-  "engine": {
+  "engines": {
     "node": "v18.14.0"
   },
   "author": "",
