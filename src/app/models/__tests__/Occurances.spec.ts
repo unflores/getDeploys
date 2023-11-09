@@ -4,7 +4,7 @@ import { occuranceFactory } from './occuranceFactory'
 
 describe('Occurance', () => {
   beforeAll(async () => {
-    await connect('mongodb://conan:conan@localhost:27017/stats_testing')
+    await connect('mongodb://conan:conan@localhost:27017/stats_testing', 100)
   })
   beforeEach(async () => {
     await Occurances.collection().deleteMany({})

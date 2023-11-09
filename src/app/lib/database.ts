@@ -9,11 +9,11 @@ class DatabaseConnectionTimeout extends Error {
 
 let client: MongoClient
 
-async function connect(url: string) {
+async function connect(url: string, timeout: number) {
   try {
     client = await MongoClient.connect(
       url,
-      { serverSelectionTimeoutMS: 100, socketTimeoutMS: 30 }
+      { serverSelectionTimeoutMS: timeout, socketTimeoutMS: 30 }
     )
 
   } catch (error) {

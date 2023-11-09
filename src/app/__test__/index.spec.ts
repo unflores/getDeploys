@@ -16,7 +16,8 @@ beforeAll(async () => {
     },
     db: {
       name: 'dumb-name',
-      url: 'mongodb://conan:conan@localhost:27017/stats_testing'
+      url: 'mongodb://conan:conan@localhost:27017/stats_testing',
+      timeout: 100
     }
   })
 })
