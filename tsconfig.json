@@ -22,6 +22,7 @@
   },
   "include": [
     "./index.ts",
+    "./.eslintrc.js",
     "./src/**/*",
     "./tasks/**/*"
   ],
