@@ -1,4 +1,4 @@
-import { MongoClient, MongoServerSelectionError } from 'mongodb'
+import { MongoClient } from 'mongodb'
 
 class DatabaseConnectionTimeout extends Error {
   constructor(msg: string, stack: string) {
@@ -13,11 +13,11 @@ async function connect(url: string, timeout: number) {
   try {
     client = await MongoClient.connect(
       url,
-      { serverSelectionTimeoutMS: timeout, socketTimeoutMS: 30 }
+      { serverSelectionTimeoutMS: timeout, socketTimeoutMS: timeout }
     )
 
   } catch (error) {
-    if (error instanceof MongoServerSelectionError) {
+    if(error instanceof Error) {
       throw new DatabaseConnectionTimeout('Failed connection', error.stack)
     }
   }
@@ -32,7 +32,7 @@ async function disconnect() {
 }
 
 function getDb() {
-  return client.db()
+  return client.db('stats_production')
 }
 
 export {
