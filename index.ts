@@ -8,7 +8,7 @@ if (require.main) {
     server: {
       password: process.env.password,
       staticDir: process.env.staticDir,
-      port: process.env.listenPort
+      port: process.env.PORT
     },
     db: {
       name: process.env.dbName,
