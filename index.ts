@@ -16,6 +16,7 @@ if (require.main) {
       timeout: parseInt(process.env.dbSelectionTimeout, 10)
     }
 
-  }).catch((error) => console.log(error))
-  console.log(`I see you on ${process.env.listenPort}`)
+  }).catch(error => console.log(error))
+
+  console.log(`I see you on ${process.env.PORT}`)
 }

@@ -18,7 +18,8 @@ function getProcessor(args: string[]): string {
   return processorArg.split('--processor=')[1]
 }
 
-new Promise(async (resolve) => {
+
+const processStats =  async () => {
   const authToken = process.env.TOKEN
   const repo = process.env.REPO
   const repoOwner = process.env.OWNER
@@ -47,10 +48,8 @@ new Promise(async (resolve) => {
       `FAILURE: Must provide a VALID processor. ` +
       `Please specifiy --processor=<${Object.keys(processors).join('|')}>`
     )
-    resolve('done')
     return
   }
-
-  resolve('done')
 }
-).then(() => console.log('Done')).catch((reason) => console.log(reason))
+
+processStats().then(() => console.log('Done')).catch((reason) => console.log(reason))
