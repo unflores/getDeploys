@@ -4,16 +4,16 @@ class Occurance {
   createdAt: string
 
   constructor(params: { createdAt: string }) {
-    this.createdAt = params.createdAt;
+    this.createdAt = params.createdAt
   }
 
   get dayBucket(): string {
-    return moment(this.createdAt).format('YYYY-M-D');
+    return moment(this.createdAt).format('YYYY-M-D')
   }
 
   // gets the bucket key for a given deploy week
   get monthBucket(): string {
-    return moment(this.createdAt).format('YYYY-M');
+    return moment(this.createdAt).format('YYYY-M')
   }
 }
 
