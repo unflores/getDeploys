@@ -1,13 +1,18 @@
 import { Octokit } from 'octokit'
 import { Occurance } from './Occurance'
 
+type Credentials = {
+  authToken: string
+  repo: string
+  repoOwner: string
+}
 class DeployClient {
 
   repoOwner: string
   repo: string
   client: Octokit
 
-  constructor({ authToken, repo, repoOwner }) {
+  constructor({ authToken, repo, repoOwner}: Credentials) {
     this.repoOwner = repoOwner
     this.repo = repo
 
@@ -16,7 +21,7 @@ class DeployClient {
     })
   }
 
-  async #getPage(page) {
+  async #getPage(page: number) {
     // https://docs.github.com/en/rest/deployments/deployments#list-deployments
     const request = `GET /repos/${this.repoOwner}/${this.repo}/deployments`
     const params = {
