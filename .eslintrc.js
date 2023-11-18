@@ -32,6 +32,8 @@ module.exports = {
     "@typescript-eslint/tslint",
   ],
   root: true,
+  ignorePatterns: ['dist/'],
+
   overrides: [
     {
       files: ['*.ts'],

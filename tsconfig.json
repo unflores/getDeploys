@@ -24,7 +24,8 @@
     "./index.ts",
     "./.eslintrc.js",
     "./src/**/*",
-    "./tasks/**/*"
+    "./tasks/**/*",
+    "./lib/**/*"
   ],
   "exclude": [
     "node_modules",
