@@ -47,9 +47,6 @@ async function createDeployGraphData(absDirectory: string, writer: Writer) {
   const data = makeDayCountsCumulative(
     releaseCandidatesPerDay(commits)
   )
-  // let data = releaseCandidatesPerDay(releaseCandidates);
-  // Only get 2022
-  // data = objectFilter(data, (key, _value) => key.match(/^2022-/) === null)
 
   const output = Object.keys(data)
     .sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf())

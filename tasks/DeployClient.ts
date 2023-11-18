@@ -1,13 +1,28 @@
 import { Octokit } from 'octokit'
 import { Occurance } from './Occurance'
 
+type Credentials = {
+  authToken: string
+  repo: string
+  repoOwner: string
+}
+
+// https://docs.github.com/fr/rest/deployments/deployments?apiVersion=2022-11-28#list-deployments
+type DeploymentsResponse = {
+  data: Deployment[]
+  status: number
+}
+type Deployment = {
+  created_at: string
+}
+
 class DeployClient {
 
   repoOwner: string
   repo: string
   client: Octokit
 
-  constructor({ authToken, repo, repoOwner }) {
+  constructor({ authToken, repo, repoOwner}: Credentials) {
     this.repoOwner = repoOwner
     this.repo = repo
 
@@ -16,7 +31,7 @@ class DeployClient {
     })
   }
 
-  async #getPage(page) {
+  async #getPage(page: number) {
     // https://docs.github.com/en/rest/deployments/deployments#list-deployments
     const request = `GET /repos/${this.repoOwner}/${this.repo}/deployments`
     const params = {
@@ -27,7 +42,7 @@ class DeployClient {
       per_page: 100
     }
 
-    const results = await this.client.request(request, params)
+    const results: DeploymentsResponse = await this.client.request(request, params)
 
     if (results.status !== 200) {
       console.log({ request, params })
@@ -38,7 +53,7 @@ class DeployClient {
   }
 
   async getDeploys(): Promise<Occurance[]> {
-    const pagePromises = []
+    const pagePromises: Promise<Deployment[]>[] = []
     for (let i = 0; i < 20; i++) {
       pagePromises.push(this.#getPage(i))
     }

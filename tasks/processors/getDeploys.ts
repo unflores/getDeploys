@@ -3,11 +3,12 @@ import { Writer, DeployClient, Bucket } from './types'
 function deploysToDeploysPerPeriod(deploys: Bucket[], period = 'month') {
   const bucket = `${period}Bucket`
   return deploys.reduce((deploysPerPeriod, deploy) => {
-    if (deploysPerPeriod[deploy[bucket]] === undefined) {
-      deploysPerPeriod[deploy[bucket]] = 0
+
+    if (deploysPerPeriod[deploy[bucket] as string | undefined] === undefined) {
+      deploysPerPeriod[deploy[bucket] as string] = 0
     }
 
-    deploysPerPeriod[deploy[bucket]] += 1
+    deploysPerPeriod[deploy[bucket] as string] += 1
 
     return deploysPerPeriod
   },                    {})

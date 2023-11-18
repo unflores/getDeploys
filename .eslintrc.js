@@ -32,6 +32,23 @@ module.exports = {
     "@typescript-eslint/tslint",
   ],
   root: true,
+  ignorePatterns: ['dist/'],
+
+  overrides: [
+    {
+      files: ['*.ts'],
+      rules: {
+        'max-len': [
+          'error',
+          {
+            code: 500, // Obscenely long max
+            ignoreComments: true,
+            ignorePattern: '^\\s*https?:\\/\\/',
+          },
+        ],
+      },
+    },
+  ],
   rules: {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/array-type": [
