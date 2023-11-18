@@ -17,13 +17,13 @@ function commitsPerDeploysInMonth(commits: Bucket[], deploys: Bucket[], month: s
   return commitsPerMonth / deploysPerMonth
 }
 
-function releaseCandidatesPerDeploys({ commits, deploys, endDate }) {
+function releaseCandidatesPerDeploys(commits: Bucket[], deploys: Bucket[], endDate: string) {
   if (deploys.length === 0) {
     return []
   }
   let currentDate = oldestDeploy(deploys).monthBucket
 
-  const candidatesPerDeploys = []
+  const candidatesPerDeploys: [string, number][] = []
 
   while (build(currentDate) < build(endDate)) {
     candidatesPerDeploys.push(
@@ -39,7 +39,7 @@ async function exportGraphData(absDirectory: string, deployClient: DeployClient,
   const commits = await gitLogReader.getCommits(absDirectory)
   const deploys = await deployClient.getDeploys()
   const data = releaseCandidatesPerDeploys(
-    { commits, deploys, endDate: moment().format('YYYY-MM') }
+    commits, deploys, moment().format('YYYY-MM')
   )
 
   writer.write({ data, subject: 'releaseCandidatesPerDeploys' })
