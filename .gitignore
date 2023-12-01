@@ -1,5 +1,11 @@
 .env
-node_modules
+
+# https://github.com/yarnpkg/berry/issues/454#issuecomment-530312089
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+
 data.js
 data/*
 !data/.keepme
