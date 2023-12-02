@@ -7,7 +7,7 @@
     "start": "node ./dist/index.js",
     "dev": "npx nodemon --inspect ./dist/index.js | bunyan",
     "build": "npx tsc -d --project ./tsconfig.json",
-    "build:watch": "npm run build -- --watch",
+    "build:watch": "yarn run build -- --watch",
     "seed": "node dist/src/app/seed/index.js",
     "test": "jest",
     "lint": "eslint -c .eslintrc.js --ext .ts ./",
