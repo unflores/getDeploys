@@ -4,7 +4,7 @@ on:
   push:
 
 env:
-  NODE_VERSION: 16.14.0
+  NODE_VERSION: v18.14.0
 
 jobs:
   linting:
