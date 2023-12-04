@@ -4,7 +4,8 @@ on:
   push:
 
 env:
-  NODE_VERSION: 16.14.0
+  NODE_VERSION: v18.14.0
+  YARN_VERSION: 3.5.0
 
 jobs:
   linting:
@@ -16,11 +17,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - id: corepack-enable
+        run: corepack enable
+
+      - id: corepack-prepare
+        run: corepack prepare yarn@${{ env.YARN_VERSION }} --activate
+
+      - id: yarn-set-version
+        run: yarn set version ${{ env.YARN_VERSION }}
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Lint Code
-        run: npm run lint
+        run: yarn run lint
