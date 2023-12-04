@@ -1517,19 +1517,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin-tslint@npm:^6.9.1":
-  version: 6.12.0
-  resolution: "@typescript-eslint/eslint-plugin-tslint@npm:6.12.0"
-  dependencies:
-    "@typescript-eslint/utils": 6.12.0
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-    tslint: ^5.0.0 || ^6.0.0
-    typescript: "*"
-  checksum: 1454d4964874acaed73b806ea51e29983900720a76ac5724b6d765b970e6fe4d5151b9a682dfd588449cb33334b1ce9fc4c6e535edc4d155e548414891cb3c34
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:^6.9.1":
   version: 6.12.0
   resolution: "@typescript-eslint/eslint-plugin@npm:6.12.0"
@@ -2466,7 +2453,6 @@ __metadata:
     "@types/jest": ^29.5.10
     "@types/supertest": ^2.0.12
     "@typescript-eslint/eslint-plugin": ^6.9.1
-    "@typescript-eslint/eslint-plugin-tslint": ^6.9.1
     "@typescript-eslint/parser": ^6.9.1
     dotenv: ^16.0.3
     eslint: ^8.53.0
