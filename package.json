@@ -14,7 +14,7 @@
     "process": "node ./dist/tasks/index.js"
   },
   "engines": {
-    "node": "v18.14.0"
+    "node": "v18.18.2"
   },
   "author": "",
   "license": "ISC",
@@ -44,5 +44,6 @@
     "moment": "^2.29.4",
     "mongodb": "^6.2.0",
     "octokit": "^2.0.5"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
