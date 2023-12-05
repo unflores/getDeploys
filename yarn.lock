@@ -1417,6 +1417,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^20.10.3":
+  version: 20.10.3
+  resolution: "@types/node@npm:20.10.3"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 7cb506abb0d570bb5133bd06a47115109a813b507323c985c3b4aef2993eed79b6bb62b82194cb5c558b4d349de3d199ee2e8c693b913065a1cd7f526cc65a68
+  languageName: node
+  linkType: hard
+
 "@types/qs@npm:*":
   version: 6.9.10
   resolution: "@types/qs@npm:6.9.10"
@@ -2451,6 +2460,7 @@ __metadata:
     "@jest/globals": "npm:^29.7.0"
     "@types/express": "npm:^4.17.14"
     "@types/jest": "npm:^29.5.10"
+    "@types/node": "npm:^20.10.3"
     "@types/supertest": "npm:^2.0.12"
     "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
     "@typescript-eslint/parser": "npm:^6.9.1"
@@ -2470,6 +2480,7 @@ __metadata:
     octokit: "npm:^2.0.5"
     supertest: "npm:^6.3.1"
     ts-jest: "npm:^29.0.3"
+    tsc: "npm:^2.0.4"
     typescript: "npm:^4.8.4"
   languageName: unknown
   linkType: soft
@@ -5893,6 +5904,15 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: 30e8259baba95dd786e64f7c18b864e904598f3ba07911be4d9bd29ca9c3c0024bad4ccf8ec0abd2a2fa14b06622cbbadff1b3be822189c657196442d33ee6ca
+  languageName: node
+  linkType: hard
+
+"tsc@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "tsc@npm:2.0.4"
+  bin:
+    tsc: bin/tsc
+  checksum: 50b10240887424c66454687f0fca4e319713b35cb44f0dab228719eb4dd757251f83c3d79e60d29dfbe90c2d6f1272f793b83e75a9fca2c622b4213ad3eb8cb1
   languageName: node
   linkType: hard
 

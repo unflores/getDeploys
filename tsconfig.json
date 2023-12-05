@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "esnext",
     "outDir": "./dist/",
     "noUnusedLocals": true,
     "allowUnreachableCode": true,
@@ -15,10 +15,7 @@
     ],
     "baseUrl": ".",
     "alwaysStrict": true,
-    "typeRoots": [
-      "@types",
-      "./.yarn/@types"
-    ]
+    "typeRoots": []
   },
   "include": [
     "./index.ts",
@@ -26,9 +23,5 @@
     "./src/**/*",
     "./tasks/**/*",
     "./lib/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
   ]
 }
