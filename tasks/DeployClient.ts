@@ -1,4 +1,4 @@
-import { Octokit } from 'octokit'
+import { Octokit } from '@octokit/rest'
 import { Occurance } from './Occurance'
 
 type Credentials = {

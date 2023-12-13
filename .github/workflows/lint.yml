@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Lint Code
         run: yarn run lint

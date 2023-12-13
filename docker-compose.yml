@@ -4,6 +4,19 @@ volumes:
   db-data:
     external: false
 services:
+  dev:
+    environment:
+      dbUrl: mongodb://admin:admin@deploy_counts-mongo-1/stats_development?authSource=admin
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+
+    command: 'tail -f /dev/null'
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - '.:/var/service:cached'
   mongo:
     image: mongo
     restart: always
