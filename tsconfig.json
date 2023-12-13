@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2017",
     "moduleResolution": "node",
+    "target": "es2017",
     "module": "commonjs",
     "outDir": "./dist/",
     "noUnusedLocals": true,
@@ -15,10 +15,7 @@
     ],
     "baseUrl": ".",
     "alwaysStrict": true,
-    "typeRoots": [
-      "@types",
-      "./.yarn/@types"
-    ]
+    "typeRoots": []
   },
   "include": [
     "./index.ts",
@@ -26,9 +23,5 @@
     "./src/**/*",
     "./tasks/**/*",
     "./lib/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
   ]
 }

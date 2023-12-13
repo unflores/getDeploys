@@ -5,7 +5,7 @@ on:
 
 env:
   NODE_VERSION: v18.14.0
-  YARN_VERSION: 3.5.0
+  YARN_VERSION: 4.0.2
 
 jobs:
   linting:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Lint Code
         run: yarn run lint
