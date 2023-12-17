@@ -5,7 +5,7 @@ import {describe, beforeAll, beforeEach, it, expect, afterAll} from '@jest/globa
 
 describe('Occurance', () => {
   beforeAll(async () => {
-    await connect('mongodb://conan:conan@localhost:27017/stats_testing', 100)
+    await connect('mongodb://conan:conan@mongo:27017/stats_testing', 100)
   })
   beforeEach(async () => {
     await Occurances.collection().deleteMany({})

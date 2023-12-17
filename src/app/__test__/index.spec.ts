@@ -16,8 +16,7 @@ beforeAll(async () => {
       staticDir: path.resolve(__dirname, 'assets/'),
     },
     db: {
-      name: 'dumb-name',
-      url: 'mongodb://conan:conan@localhost:27017/stats_testing',
+      url: 'mongodb://conan:conan@mongo:27017/stats_testing',
       timeout: 100
     }
   })

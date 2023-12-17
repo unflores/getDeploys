@@ -6,14 +6,13 @@ import { buildRoutes } from './router'
 
 // let app: express.Express
 
-interface Config {
+type Config = {
   server: {
     password: string
     staticDir: string
     port: string
   }
   db: {
-    name: string
     url: string
     timeout: number
   }
