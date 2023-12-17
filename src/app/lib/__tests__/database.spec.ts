@@ -1,5 +1,9 @@
 import { connect, disconnect, DatabaseConnectionTimeout } from '../database'
-import {describe, it, expect} from '@jest/globals'
+import {describe, it, expect, afterAll} from '@jest/globals'
+
+afterAll(async () => {
+  await disconnect()
+})
 
 describe('#start', () => {
   describe('bad host', () => {
@@ -7,7 +11,6 @@ describe('#start', () => {
       await expect(
         connect('mongodb://bad_host:27017', 100)
       ).rejects.toThrow(DatabaseConnectionTimeout)
-      await disconnect()
     })
   })
 })
