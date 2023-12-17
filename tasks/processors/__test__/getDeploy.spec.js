@@ -1,5 +1,5 @@
-const { Octokit } = require('octokit');
-jest.mock('octokit');
+const { Octokit } = require('@octokit/rest');
+jest.mock('@octokit/rest');
 const request = async (_path, _params) => ({ status: 200, data: { created_at: '2022-08-09T09:32:18Z' } });
 
 Octokit.mockImplementation(() => {

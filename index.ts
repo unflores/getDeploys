@@ -11,7 +11,6 @@ if (require.main) {
       port: process.env.PORT
     },
     db: {
-      name: process.env.dbName,
       url: process.env.dbUrl,
       timeout: parseInt(process.env.dbSelectionTimeout, 10)
     }

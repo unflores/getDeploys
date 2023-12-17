@@ -38,57 +38,57 @@ describe('exportGraphData', () => {
 
 describe('releaseCandidatesPerDeploys', () => {
   it('returns the mean of commits per deploys for a month', () => {
-    expect(releaseCandidatesPerDeploys({
-      commits: [
+    expect(releaseCandidatesPerDeploys(
+      [
         new Occurance({ createdAt: '2022-07-29T09:32:18Z' }),
         new Occurance({ createdAt: '2022-08-01T09:32:18Z' }),
         new Occurance({ createdAt: '2022-08-01T09:32:18Z' }),
       ],
-      deploys: [
+      [
         new Occurance({ createdAt: '2022-08-05T09:32:18Z' })
       ],
-      endDate: '2022-9'
-    })).toEqual([['2022-8', 2]])
+      '2022-9'
+    )).toEqual([['2022-8', 2]])
   });
 
   describe('when no deploys for a month', () => {
     it('returns 0', () => {
-      expect(releaseCandidatesPerDeploys({
-        commits: [
+      expect(releaseCandidatesPerDeploys(
+        [
           new Occurance({ createdAt: '2022-07-29T09:32:18Z' })
         ],
-        deploys: [
+        [
           new Occurance({ createdAt: '2022-07-05T09:32:18Z' })
         ],
-        endDate: '2022-9'
-      })).toEqual([['2022-7', 1], ['2022-8', 0]])
+        '2022-9'
+      )).toEqual([['2022-7', 1], ['2022-8', 0]])
     })
   })
 
   describe('when multiple deploys', () => {
     it('starts with the first', () => {
-      expect(releaseCandidatesPerDeploys({
-        commits: [
+      expect(releaseCandidatesPerDeploys(
+        [
           new Occurance({ createdAt: '2022-08-29T09:32:18Z' }),
           new Occurance({ createdAt: '2022-07-29T09:32:18Z' })
         ],
-        deploys: [
+        [
           new Occurance({ createdAt: '2022-08-05T09:32:18Z' }),
           new Occurance({ createdAt: '2022-07-05T09:32:18Z' })
         ],
-        endDate: '2022-9'
-      })).toEqual([['2022-7', 1], ['2022-8', 1]])
+        '2022-9'
+      )).toEqual([['2022-7', 1], ['2022-8', 1]])
     })
   });
   describe('when NO deploys', () => {
     it('returns empty Array', () => {
-      expect(releaseCandidatesPerDeploys({
-        commits: [
+      expect(releaseCandidatesPerDeploys(
+        [
           new Occurance({ createdAt: '2022-07-29T09:32:18Z' })
         ],
-        deploys: [],
-        endDate: '2022-9'
-      })).toEqual([])
+        [],
+        '2022-9'
+      )).toEqual([])
     })
   })
 });
