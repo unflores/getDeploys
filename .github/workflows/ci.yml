@@ -1,4 +1,4 @@
-name: Lint
+name: CI
 
 on:
   push:
@@ -8,8 +8,8 @@ env:
   YARN_VERSION: 4.0.2
 
 jobs:
-  linting:
-    name: Linting
+  build:
+    name: Setup Instance
     runs-on: ubuntu-latest
     steps:
       - name: Install NodeJS
@@ -32,5 +32,18 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
 
+  lint:
+    name: Lint
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
       - name: Lint Code
         run: yarn run lint
+
+  test:
+    name: Test
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint Code
+        run: yarn test
