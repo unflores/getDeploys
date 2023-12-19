@@ -14,6 +14,46 @@ describe('Occurance', () => {
     await disconnect()
   })
 
+  describe('#importJsonOccurances', () => {
+    describe('when occurances empty', () => {
+      it('throws exception with validation messages', async () => {
+        let error: Occurances.ValidationError
+
+        try {
+          await Occurances.importJsonOccurances('', {})
+        } catch (e) {
+          error = e as Occurances.ValidationError
+        }
+        expect(error.details).toBeDefined()
+      })
+    })
+
+    describe('when invalid', () => {
+      it('throws exception with validation messages', async () => {
+        let error: Occurances.ValidationError
+
+        try {
+          await Occurances.importJsonOccurances('invalid_type', {'2023-10': 3})
+        } catch (e) {
+          error = e as Occurances.ValidationError
+        }
+        expect(error.details).toBeDefined()
+      })
+
+    })
+
+    it('returns inserted occurances', async () => {
+      const inserted = await Occurances.importJsonOccurances('deploy', {'2023-01': 2})
+      inserted.map((doc) => expect(doc.type).toEqual('deploy'))
+      inserted.map((doc) => expect(doc.bucket).toEqual('2023-01-01'))
+      inserted.map((doc) => expect(doc).toHaveProperty('occurredAt'))
+      inserted.map((doc) => expect(doc).toHaveProperty('createdAt'))
+      inserted.map((doc) => expect(doc).toHaveProperty('_id'))
+      expect(inserted.length).toEqual(2)
+    })
+
+  })
+
   describe('#findByType', () => {
     beforeEach(async () => {
       await Occurances.insertOne(occuranceFactory.build({ type: 'deploy' }))
@@ -57,7 +97,12 @@ describe('Occurance', () => {
     it('returns inserted occurance', async () => {
       const document = occuranceFactory.build()
       const inserted = await Occurances.insertOne(document)
-      expect(inserted).toEqual(inserted)
+      expect(inserted.bucket).toEqual(document.bucket)
+      expect(inserted.createdAt).toEqual(document.createdAt)
+      expect(inserted.occurredAt).toEqual(document.occurredAt)
+      expect(inserted.type).toEqual(document.type)
+      expect(inserted).toHaveProperty('_id');
+
     })
 
     it('inserts record', async () => {
