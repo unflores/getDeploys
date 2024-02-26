@@ -1,6 +1,7 @@
 import * as gitLogReader from '../gitLogReader'
 import * as dateLib from '../../lib/dateLib'
-import { Writer, Bucket } from './types'
+import { Bucket } from './types'
+import { Writer } from '../../lib/types'
 
 function releaseCandidatesPerDay(candidates: Bucket[]) {
   return candidates.reduce((candidatesPerDay, candidate) => {

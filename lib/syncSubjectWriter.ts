@@ -1,14 +1,10 @@
 import { writeFileSync } from 'fs'
-
-interface WriteParams {
-  subject: string
-  data: { [k: string]: any }
-}
+import {Writer} from './types'
 
 interface Options {
   type?: string
 }
-class SyncSubjectWriter {
+class SyncSubjectWriter implements Writer {
 
   options: Options
 
@@ -17,7 +13,7 @@ class SyncSubjectWriter {
   }
 
   write(
-    { subject, data }: WriteParams
+    { subject, data }
   ) {
 
     if (this.options.type === 'js' || this.options.type === undefined) {

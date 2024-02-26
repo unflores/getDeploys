@@ -1,7 +1,8 @@
 import { build, next } from '../../lib/dateLib'
 import * as moment from 'moment'
 import * as gitLogReader from '../gitLogReader'
-import { Writer, DeployClient, Bucket } from './types'
+import { DeployClient, Bucket } from './types'
+import { Writer } from '../../lib/types'
 
 function oldestDeploy(deploys: Bucket[]) {
   return deploys.reduce((a, b) => moment(a.createdAt) < moment(b.createdAt) ? a : b)
