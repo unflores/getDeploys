@@ -19,19 +19,33 @@ type ExecResponse = {
 }
 
 async function getCommits(absDirectory: string): Promise<Occurance[]> {
-  const logs = await asyncExec(
-    `git -C ${absDirectory} log --pretty=format:"%h_commitsep_%ad"`,
-    { maxBuffer: 10 * 1024 * 1024 } // Bad temp idea
-  ) as ExecResponse
+  const reader = new GitLogReader(absDirectory)
+  return await reader.getCommits()
+}
 
-  return logs.stdout
-    .split("\n")
-    .map((line: string) => line.split('_commitsep_'))
-    .map((vals: string[]): Commit => ({ hash: vals[0].trim(), createdAt: vals[1] }))
-    .filter((commit: Commit) => commit.hash !== '')
-    .map((params: Commit) => new Occurance(params))
+class GitLogReader {
+  absPath: string
+
+  constructor(absPath: string) {
+    this.absPath = absPath
+  }
+
+  async getCommits(): Promise<Occurance[]> {
+    const logs = await asyncExec(
+      `git -C ${this.absPath} log --pretty=format:"%h_commitsep_%ad"`,
+      { maxBuffer: 10 * 1024 * 1024 } // Bad temp idea
+    ) as ExecResponse
+
+    return logs.stdout
+      .split("\n")
+      .map((line: string) => line.split('_commitsep_'))
+      .map((vals: string[]): Commit => ({ hash: vals[0].trim(), createdAt: vals[1] }))
+      .filter((commit: Commit) => commit.hash !== '')
+      .map((params: Commit) => new Occurance(params))
+  }
 }
 
 export {
+  GitLogReader,
   getCommits
 }
