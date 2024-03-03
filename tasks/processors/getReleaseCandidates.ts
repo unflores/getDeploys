@@ -1,6 +1,8 @@
 import * as gitLogReader from '../gitLogReader'
 import * as dateLib from '../../lib/dateLib'
-import { Writer, Bucket } from './types'
+import { Bucket } from './types'
+import { Writer } from '../../lib/types'
+
 
 function releaseCandidatesPerDay(candidates: Bucket[]) {
   return candidates.reduce((candidatesPerDay, candidate) => {
@@ -41,6 +43,11 @@ function makeDayCountsCumulative(dayCounts: DayCounts) {
   return counts
 }
 
+async function createReleaseCandidates(absDirectory: string, writer: Writer) {
+  const commits = await gitLogReader.getCommits(absDirectory)
+  writer.write({ data: commits.map((commit) => (commit.createdAt)), subject: 'releaseCandidates' })
+}
+
 async function createDeployGraphData(absDirectory: string, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory)
 
@@ -56,6 +63,7 @@ async function createDeployGraphData(absDirectory: string, writer: Writer) {
 }
 
 export {
+  createReleaseCandidates,
   createDeployGraphData,
   releaseCandidatesPerDay,
   makeDayCountsCumulative

@@ -12,7 +12,7 @@ jest.mock('../../gitLogReader', () => {
 })
 
 DeployClient.mockImplementation(() => {
-  return { getDeploys: async () => deploys() }
+  return { buildOccurances: async () => deploys() }
 });
 
 const deploys = () => {

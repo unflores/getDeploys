@@ -1,5 +1,6 @@
 import { Octokit } from '@octokit/rest'
 import { Occurance } from './Occurance'
+import { Processor } from './types'
 
 type Credentials = {
   authToken: string
@@ -16,7 +17,7 @@ type Deployment = {
   created_at: string
 }
 
-class DeployClient {
+class DeployClient implements Processor{
 
   repoOwner: string
   repo: string
@@ -52,7 +53,7 @@ class DeployClient {
     return results.data
   }
 
-  async getDeploys(): Promise<Occurance[]> {
+  async buildOccurances(): Promise<Occurance[]> {
     const pagePromises: Promise<Deployment[]>[] = []
     for (let i = 0; i < 20; i++) {
       pagePromises.push(this.#getPage(i))

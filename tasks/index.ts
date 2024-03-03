@@ -1,15 +1,10 @@
 import * as dotenv from 'dotenv'
-
 dotenv.config()
 
 import { SyncSubjectWriter } from '../lib/syncSubjectWriter'
-import * as deployProcessor from './processors/getDeploys'
-import * as candidatesProcessor from './processors/getReleaseCandidates'
-import * as candidatesDeploysProcessor from './processors/getReleaseCandidatesPerDeploys'
+import { buildProcessor } from './processorFactory'
 
-import { DeployClient } from './DeployClient'
-
-function getProcessor(args: string[]): string {
+function parseProcessorName(args: string[]): string {
   const processorArg = args.find((arg) => arg.search('--processor=') > -1)
   if (processorArg === undefined) {
     return ''
@@ -18,38 +13,43 @@ function getProcessor(args: string[]): string {
   return processorArg.split('--processor=')[1]
 }
 
+export const processorsToFile = {
+  getDeploys: 'deploys',
+  getReleaseCandidates: 'releaseCandidates',
+  getReleaseCandidatesPerDeploys: 'releaseCandidatesPerDeploys'
+}
+
+export type Config = {
+  authToken: string
+  repo: string
+  repoOwner: string
+  absDirectory: string
+}
+
+const config: Config = {
+  authToken: process.env.TOKEN,
+  repo: process.env.REPO,
+  repoOwner: process.env.OWNER,
+  absDirectory: process.env.PROJECT_DIRECTORY
+}
 
 const processStats =  async () => {
-  const authToken = process.env.TOKEN
-  const repo = process.env.REPO
-  const repoOwner = process.env.OWNER
-  const absDirectory = process.env.PROJECT_DIRECTORY
-  const deployClient = new DeployClient({ authToken, repo, repoOwner })
-
-  const processor = getProcessor(process.argv)
-  const processors = {
-    getDeploys: 'getDeploys',
-    getReleaseCandidates: 'getReleaseCandidates',
-    getReleaseCandidatesPerDeploys: 'getReleaseCandidatesPerDeploys'
-  }
-
+  const processorName = parseProcessorName(process.argv)
   const options = { type: process.env.DATA_EXPORT_FILE_TYPE || 'js' }
 
   const syncSubjectWriter = new SyncSubjectWriter(options)
+  const processor = buildProcessor(processorName, config)
 
-  if (processor === processors.getDeploys) {
-    await deployProcessor.createDeployGraphData(deployClient, syncSubjectWriter)
-  } else if (processor === processors.getReleaseCandidates) {
-    await candidatesProcessor.createDeployGraphData(absDirectory, syncSubjectWriter)
-  } else if (processor === processors.getReleaseCandidatesPerDeploys) {
-    await candidatesDeploysProcessor.exportGraphData(absDirectory, deployClient, syncSubjectWriter)
-  } else {
+  if (processor === undefined) {
     console.log(
       `FAILURE: Must provide a VALID processor. ` +
-      `Please specifiy --processor=<${Object.keys(processors).join('|')}>`
+      `Please specifiy --processor=<${Object.keys(processorsToFile).join('|')}>`
     )
     return
   }
+
+  const occurances = await processor.buildOccurances()
+  syncSubjectWriter.write({subject: processorsToFile[processorName] as string, data: occurances})
 }
 
 processStats().then(() => console.log('Done')).catch((reason) => console.log(reason))

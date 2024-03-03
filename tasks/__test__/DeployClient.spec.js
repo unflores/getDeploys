@@ -8,10 +8,10 @@ Octokit.mockImplementation(() => {
 });
 
 describe('DeployClient', () => {
-  describe('#getDeploys', () => {
+  describe('#buildOccurances', () => {
     it('returns results for each fetch', async () => {
       const client = new DeployClient({ authToken: null, repo: 'repo', repoOwner: 'me' });
-      const deploys = await client.getDeploys();
+      const deploys = await client.buildOccurances();
       // This is stupid, I don't know how to go all
       // the way back to our first deploy, but 20 pages back is enough for now.
       //
@@ -24,14 +24,14 @@ describe('DeployClient', () => {
 
     it('sends repo identifiers to 3rd party', async () => {
       const client = new DeployClient({ authToken: null, repo: 'repo', repoOwner: 'me' });
-      await client.getDeploys();
+      await client.buildOccurances();
 
       expect(request.mock.calls[0][0]).toBe('GET /repos/me/repo/deployments');
     });
 
     it('returns Deploy objects', async () => {
       const client = new DeployClient({ authToken: null, repo: 'repo', repoOwner: 'me' });
-      const deploys = await client.getDeploys();
+      const deploys = await client.buildOccurances();
 
       expect(deploys[0].createdAt).toBe('2022-08-09T09:32:18Z');
     })

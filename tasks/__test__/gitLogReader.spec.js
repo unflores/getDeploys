@@ -1,5 +1,5 @@
 const child_process = require('child_process');
-const gitLogReader = require('../gitLogReader');
+const { GitLogReader } = require('../gitLogReader');
 
 jest.mock('child_process');
 
@@ -15,14 +15,17 @@ child_process.exec.mockImplementation(
 )
 
 describe('gitLogReader', () => {
+  let reader = new GitLogReader('/some/directory')
+
   describe('#commits', () => {
     test('properly splits commits', async () => {
-      const commits = await gitLogReader.getCommits('/some/directory')
+      const commits = await reader.buildOccurances()
       expect(commits.length).toBe(4);
     });
 
     test('extracts a date', async () => {
-      const commits = await gitLogReader.getCommits('/some/directory')
+      const commits = await reader.buildOccurances()
+
       expect(commits.map((commit) => commit.createdAt)).toEqual([
         'Thu Sep 29 14:36:26 2022 +0200',
         'Wed Sep 28 21:37:37 2022 +0200',

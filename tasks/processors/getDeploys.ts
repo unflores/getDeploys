@@ -1,4 +1,6 @@
-import { Writer, DeployClient, Bucket } from './types'
+import {Bucket} from './types'
+import { Processor } from '../types'
+import { Writer } from '../../lib/types'
 
 function deploysToDeploysPerPeriod(deploys: Bucket[], period = 'month') {
   const bucket = `${period}Bucket`
@@ -14,13 +16,20 @@ function deploysToDeploysPerPeriod(deploys: Bucket[], period = 'month') {
   },                    {})
 }
 
-async function createDeployGraphData(deployClient: DeployClient, syncSubjectWriter: Writer) {
-  const deploys = await deployClient.getDeploys()
+async function createDeploys(deployClient: Processor, syncSubjectWriter: Writer) {
+  const deploys = await deployClient.buildOccurances()
+  const rawDeploys = deploys.map((deploy) => (deploy.createdAt))
+  syncSubjectWriter.write({ subject: 'deploys', data: rawDeploys })
+}
+
+async function createDeployGraphData(deployClient: Processor, syncSubjectWriter: Writer) {
+  const deploys = await deployClient.buildOccurances()
 
   const deploysPerPeriod = deploysToDeploysPerPeriod(deploys)
   syncSubjectWriter.write({ subject: 'deploys', data: deploysPerPeriod })
 }
 
 export {
+  createDeploys,
   createDeployGraphData
 }
