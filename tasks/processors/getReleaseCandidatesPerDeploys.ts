@@ -1,7 +1,8 @@
 import { build, next } from '../../lib/dateLib'
 import * as moment from 'moment'
 import * as gitLogReader from '../gitLogReader'
-import { DeployClient, Bucket } from './types'
+import { Bucket } from './types'
+import { Processor } from '../types'
 import { Writer } from '../../lib/types'
 
 function oldestDeploy(deploys: Bucket[]) {
@@ -36,9 +37,9 @@ function releaseCandidatesPerDeploys(commits: Bucket[], deploys: Bucket[], endDa
   return candidatesPerDeploys
 }
 
-async function exportGraphData(absDirectory: string, deployClient: DeployClient, writer: Writer) {
+async function exportGraphData(absDirectory: string, deployClient: Processor, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory)
-  const deploys = await deployClient.getDeploys()
+  const deploys = await deployClient.buildOccurances()
   const data = releaseCandidatesPerDeploys(
     commits, deploys, moment().format('YYYY-MM')
   )

@@ -3,6 +3,7 @@ import { exec, ExecException } from 'child_process'
 
 const asyncExec = util.promisify(exec)
 import { Occurance } from './Occurance'
+import { Processor } from './types'
 
 type Commit = {
   hash: string
@@ -20,17 +21,17 @@ type ExecResponse = {
 
 async function getCommits(absDirectory: string): Promise<Occurance[]> {
   const reader = new GitLogReader(absDirectory)
-  return await reader.getCommits()
+  return await reader.buildOccurances()
 }
 
-class GitLogReader {
+class GitLogReader implements Processor{
   absPath: string
 
   constructor(absPath: string) {
     this.absPath = absPath
   }
 
-  async getCommits(): Promise<Occurance[]> {
+  async buildOccurances(): Promise<Occurance[]> {
     const logs = await asyncExec(
       `git -C ${this.absPath} log --pretty=format:"%h_commitsep_%ad"`,
       { maxBuffer: 10 * 1024 * 1024 } // Bad temp idea
