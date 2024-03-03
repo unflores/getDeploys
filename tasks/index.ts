@@ -40,16 +40,16 @@ const processStats =  async () => {
   const syncSubjectWriter = new SyncSubjectWriter(options)
   const processor = buildProcessor(processorName, config)
 
-  if (processor !== undefined) {
-    const occurances = await processor.buildOccurances()
-    syncSubjectWriter.write({subject: processorsToFile[processorName] as string, data: occurances})
-  } else {
+  if (processor === undefined) {
     console.log(
       `FAILURE: Must provide a VALID processor. ` +
       `Please specifiy --processor=<${Object.keys(processorsToFile).join('|')}>`
     )
     return
   }
+
+  const occurances = await processor.buildOccurances()
+  syncSubjectWriter.write({subject: processorsToFile[processorName] as string, data: occurances})
 }
 
 processStats().then(() => console.log('Done')).catch((reason) => console.log(reason))

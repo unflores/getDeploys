@@ -10,7 +10,7 @@
     "build:watch": "yarn run build -- --watch",
     "seed": "node dist/src/app/seed/index.js",
     "test": "jest",
-    "lint": "eslint -c .eslintrc.js --ext .ts ./",
+    "lint": "yarn run eslint -c .eslintrc.js --ext .ts ./",
     "process": "node ./dist/tasks/index.js"
   },
   "engines": {
