@@ -2,21 +2,6 @@ import { makeDayCountsCumulative, releaseCandidatesPerDay, ReleaseCandidateProce
 import { Occurance } from '../../Occurance'
 import { GitLogReader } from '../../gitLogReader';
 
-describe('ReleaseCandidateProcessor', () => {
-  describe('#buildOccurances', () => {
-
-    const mockedWriter = { write: jest.fn() };
-
-    it('writes to a file releaseCandidates.js', async () => {
-      const processor = new ReleaseCandidateProcessor(new GitLogReader('someDirectory'), mockedWriter)
-      processor.buildOccurances()
-
-      const writerParams = mockedWriter.write.mock.calls[0][0]
-      expect(writerParams.subject).toBe('releaseCandidatesPerDeploys');
-    });
-  })
-})
-
 describe('getReleaseCandidates', () => {
   describe('#makeDayCountsCumulative', () => {
     it('Adds count from previous day', () => {

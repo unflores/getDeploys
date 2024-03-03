@@ -63,7 +63,6 @@ async function createDeployGraphData(absDirectory: string, writer: Writer) {
 }
 
 export {
-  ReleaseCandidateProcessor,
   createReleaseCandidates,
   createDeployGraphData,
   releaseCandidatesPerDay,

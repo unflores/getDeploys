@@ -51,7 +51,7 @@ describe('getDeploys', () => {
       // Since I am mocking the data each fetch has a response
       // Hence 20 responses
       const writerParams = mockedWriter.write.mock.calls[0][0]
-      expect(Object.values(writerParams.data)[0]).toBe('2022-08-09T09:32:18Z');
+      expect(Object.values(writerParams.data)[0]).toBe(20);
     })
   })
 })

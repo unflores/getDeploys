@@ -13,10 +13,10 @@ function parseProcessorName(args: string[]): string {
   return processorArg.split('--processor=')[1]
 }
 
-export const processors = {
-  getDeploys: 'getDeploys',
-  getReleaseCandidates: 'getReleaseCandidates',
-  getReleaseCandidatesPerDeploys: 'getReleaseCandidatesPerDeploys'
+export const processorsToFile = {
+  getDeploys: 'deploys',
+  getReleaseCandidates: 'releaseCandidates',
+  getReleaseCandidatesPerDeploys: 'releaseCandidatesPerDeploys'
 }
 
 export type Config = {
@@ -42,11 +42,11 @@ const processStats =  async () => {
 
   if (processor !== undefined) {
     const occurances = await processor.buildOccurances()
-    syncSubjectWriter.write({subject: processorName, data: occurances})
+    syncSubjectWriter.write({subject: processorsToFile[processorName] as string, data: occurances})
   } else {
     console.log(
       `FAILURE: Must provide a VALID processor. ` +
-      `Please specifiy --processor=<${Object.keys(processors).join('|')}>`
+      `Please specifiy --processor=<${Object.keys(processorsToFile).join('|')}>`
     )
     return
   }

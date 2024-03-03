@@ -19,12 +19,12 @@ describe('gitLogReader', () => {
 
   describe('#commits', () => {
     test('properly splits commits', async () => {
-      const commits = await reader.getCommits()
+      const commits = await reader.buildOccurances()
       expect(commits.length).toBe(4);
     });
 
     test('extracts a date', async () => {
-      const commits = await reader.getCommits()
+      const commits = await reader.buildOccurances()
 
       expect(commits.map((commit) => commit.createdAt)).toEqual([
         'Thu Sep 29 14:36:26 2022 +0200',
