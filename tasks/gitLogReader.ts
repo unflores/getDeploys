@@ -1,7 +1,7 @@
 
 import { Occurance } from './Occurance'
 import { Processor } from './types'
-import { asyncExec } from './processors/utils'
+import { asyncExec } from './utils'
 type Commit = {
   hash: string
   createdAt: string

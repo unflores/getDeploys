@@ -7,7 +7,7 @@ const readCommits =
    c1cfd3b_commitsep_Wed Sep 28 09:42:29 2022 +0200
    f2fc00c_commitsep_Wed Sep 28 09:11:10 2022 +0200
   `
-jest.mock('../processors/utils', () => ({
+jest.mock('../utils', () => ({
   asyncExec: jest.fn().mockReturnValue({ stdout: readCommits, stderr: null })
 }))
 import { GitLogReader } from '../gitLogReader'
