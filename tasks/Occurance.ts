@@ -17,6 +17,4 @@ class Occurance {
   }
 }
 
-export {
-  Occurance
-}
+export { Occurance }

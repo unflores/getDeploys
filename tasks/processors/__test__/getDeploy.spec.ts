@@ -1,4 +1,4 @@
-import {describe, it, expect, jest, beforeEach} from '@jest/globals'
+import { describe, it, expect, jest, beforeEach } from '@jest/globals'
 
 type RequestResponse = {
   status: number
@@ -7,8 +7,11 @@ type RequestResponse = {
 
 jest.mock('@octokit/rest', () => ({
   Octokit: jest.fn(() => ({
-    request: jest.fn<() => Promise<RequestResponse>>().mockResolvedValue({ status: 200, data: [{ created_at: '2022-08-09T09:32:18Z' }] })
-  }))
+    request: jest.fn<() => Promise<RequestResponse>>().mockResolvedValue({
+      status: 200,
+      data: [{ created_at: '2022-08-09T09:32:18Z' }],
+    }),
+  })),
 }))
 
 import { createDeployGraphData, createDeploys } from '../getDeploys'
@@ -16,10 +19,9 @@ import { DeployClient } from '../../DeployClient'
 
 const mockedWriter = { write: jest.fn() }
 
-type WriterParams = {subject: string; data: any}
-const fakeParams = {repo: 'fake', repoOwner: 'fake', authToken: 'fake'}
+type WriterParams = { subject: string; data: any }
+const fakeParams = { repo: 'fake', repoOwner: 'fake', authToken: 'fake' }
 describe('getDeploys', () => {
-
   beforeEach(() => {
     mockedWriter.write.mockClear()
   })
