@@ -3,7 +3,6 @@ import * as dateLib from '../../lib/dateLib'
 import { Bucket } from './types'
 import { Writer } from '../../lib/types'
 
-
 function releaseCandidatesPerDay(candidates: Bucket[]) {
   return candidates.reduce((candidatesPerDay, candidate) => {
     if (candidatesPerDay[candidate.dayBucket] === undefined) {
@@ -12,7 +11,7 @@ function releaseCandidatesPerDay(candidates: Bucket[]) {
 
     candidatesPerDay[candidate.dayBucket] += 1
     return candidatesPerDay
-  },                       {})
+  }, {})
 }
 
 type DayCounts = {
@@ -21,13 +20,13 @@ type DayCounts = {
 
 // @params dayCounts {'2022-1-1': 1}
 function makeDayCountsCumulative(dayCounts: DayCounts) {
-  const dates = Object.keys(dayCounts)
-    .sort((a, b) => dateLib.build(a).valueOf() - dateLib.build(b).valueOf())
+  const dates = Object.keys(dayCounts).sort(
+    (a, b) => dateLib.build(a).valueOf() - dateLib.build(b).valueOf(),
+  )
   let curDate = dates[0]
   const lastDate = dates[dates.length - 1]
   const counts = { ...dayCounts }
   while (dateLib.build(curDate) <= dateLib.build(lastDate)) {
-
     if (counts[dateLib.previous(curDate)] === undefined) {
       counts[dateLib.previous(curDate)] = 0
     }
@@ -35,7 +34,7 @@ function makeDayCountsCumulative(dayCounts: DayCounts) {
       counts[curDate] = 0
     }
 
-    if ((new Date(curDate)).getDate() !== 1) {
+    if (new Date(curDate).getDate() !== 1) {
       counts[curDate] += counts[dateLib.previous(curDate)]
     }
     curDate = dateLib.next(curDate)
@@ -45,19 +44,20 @@ function makeDayCountsCumulative(dayCounts: DayCounts) {
 
 async function createReleaseCandidates(absDirectory: string, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory)
-  writer.write({ data: commits.map((commit) => (commit.createdAt)), subject: 'releaseCandidates' })
+  writer.write({
+    data: commits.map((commit) => commit.createdAt),
+    subject: 'releaseCandidates',
+  })
 }
 
 async function createDeployGraphData(absDirectory: string, writer: Writer) {
   const commits = await gitLogReader.getCommits(absDirectory)
 
-  const data = makeDayCountsCumulative(
-    releaseCandidatesPerDay(commits)
-  )
+  const data = makeDayCountsCumulative(releaseCandidatesPerDay(commits))
 
   const output = Object.keys(data)
     .sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf())
-    .map(dateString => [dateString, data[dateString]])
+    .map((dateString) => [dateString, data[dateString]])
 
   writer.write({ data: output, subject: 'releaseCandidates' })
 }
@@ -66,5 +66,5 @@ export {
   createReleaseCandidates,
   createDeployGraphData,
   releaseCandidatesPerDay,
-  makeDayCountsCumulative
+  makeDayCountsCumulative,
 }

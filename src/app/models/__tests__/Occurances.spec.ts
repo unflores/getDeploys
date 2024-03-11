@@ -1,7 +1,14 @@
 import { connect, disconnect } from '../../lib/database'
 import * as Occurances from '../Occurances'
 import { occuranceFactory } from './occuranceFactory'
-import {describe, beforeAll, beforeEach, it, expect, afterAll} from '@jest/globals'
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  it,
+  expect,
+  afterAll,
+} from '@jest/globals'
 
 describe('Occurance', () => {
   beforeAll(async () => {
@@ -17,7 +24,9 @@ describe('Occurance', () => {
   describe('#findByType', () => {
     beforeEach(async () => {
       await Occurances.insertOne(occuranceFactory.build({ type: 'deploy' }))
-      await Occurances.insertOne(occuranceFactory.build({ type: 'contributer' }))
+      await Occurances.insertOne(
+        occuranceFactory.build({ type: 'contributer' }),
+      )
     })
 
     it('returns an array of occurances corresponding to the type', async () => {
@@ -38,8 +47,12 @@ describe('Occurance', () => {
           error = e as Occurances.ValidationError
         }
 
-        const bucketError = error.details.find((invalid) => invalid.context.label === 'bucket')
-        const typeError = error.details.find((invalid) => invalid.context.label === 'type')
+        const bucketError = error.details.find(
+          (invalid) => invalid.context.label === 'bucket',
+        )
+        const typeError = error.details.find(
+          (invalid) => invalid.context.label === 'type',
+        )
         expect(bucketError).toBeTruthy()
         expect(typeError).toBeTruthy()
       })
@@ -48,7 +61,7 @@ describe('Occurance', () => {
     describe('when NO date', () => {
       it('defaults to current date', async () => {
         const inserted = await Occurances.insertOne(
-          occuranceFactory.build({ createdAt: undefined })
+          occuranceFactory.build({ createdAt: undefined }),
         )
         expect(inserted.createdAt).toBeTruthy()
       })
@@ -70,7 +83,9 @@ describe('Occurance', () => {
   describe('#all', () => {
     beforeEach(async () => {
       await Occurances.insertOne(occuranceFactory.build({ type: 'deploy' }))
-      await Occurances.insertOne(occuranceFactory.build({ type: 'contributer' }))
+      await Occurances.insertOne(
+        occuranceFactory.build({ type: 'contributer' }),
+      )
     })
 
     it('returns all occurances', async () => {

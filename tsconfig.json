@@ -9,10 +9,7 @@
     "sourceMap": true,
     "pretty": true,
     "allowJs": true,
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "baseUrl": ".",
     "alwaysStrict": true,
     "typeRoots": []

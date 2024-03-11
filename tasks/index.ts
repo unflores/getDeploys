@@ -16,7 +16,7 @@ function parseProcessorName(args: string[]): string {
 export const processorsToFile = {
   getDeploys: 'deploys',
   getReleaseCandidates: 'releaseCandidates',
-  getReleaseCandidatesPerDeploys: 'releaseCandidatesPerDeploys'
+  getReleaseCandidatesPerDeploys: 'releaseCandidatesPerDeploys',
 }
 
 export type Config = {
@@ -30,10 +30,10 @@ const config: Config = {
   authToken: process.env.TOKEN,
   repo: process.env.REPO,
   repoOwner: process.env.OWNER,
-  absDirectory: process.env.PROJECT_DIRECTORY
+  absDirectory: process.env.PROJECT_DIRECTORY,
 }
 
-const processStats =  async () => {
+const processStats = async () => {
   const processorName = parseProcessorName(process.argv)
   const options = { type: process.env.DATA_EXPORT_FILE_TYPE || 'js' }
 
@@ -43,13 +43,18 @@ const processStats =  async () => {
   if (processor === undefined) {
     console.log(
       `FAILURE: Must provide a VALID processor. ` +
-      `Please specifiy --processor=<${Object.keys(processorsToFile).join('|')}>`
+        `Please specifiy --processor=<${Object.keys(processorsToFile).join('|')}>`,
     )
     return
   }
 
   const occurances = await processor.buildOccurances()
-  syncSubjectWriter.write({subject: processorsToFile[processorName] as string, data: occurances})
+  syncSubjectWriter.write({
+    subject: processorsToFile[processorName] as string,
+    data: occurances,
+  })
 }
 
-processStats().then(() => console.log('Done')).catch((reason) => console.log(reason))
+processStats()
+  .then(() => console.log('Done'))
+  .catch((reason) => console.log(reason))

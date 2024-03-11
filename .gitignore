@@ -11,3 +11,4 @@ data/*
 !data/.keepme
 dist/*
 src/coverage/*
+node_modules

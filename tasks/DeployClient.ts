@@ -17,18 +17,17 @@ type Deployment = {
   created_at: string
 }
 
-class DeployClient implements Processor{
-
+class DeployClient implements Processor {
   repoOwner: string
   repo: string
   client: Octokit
 
-  constructor({ authToken, repo, repoOwner}: Credentials) {
+  constructor({ authToken, repo, repoOwner }: Credentials) {
     this.repoOwner = repoOwner
     this.repo = repo
 
     this.client = new Octokit({
-      auth: authToken
+      auth: authToken,
     })
   }
 
@@ -40,10 +39,13 @@ class DeployClient implements Processor{
       owner: this.repoOwner,
       repo: this.repo,
       environment: 'production',
-      per_page: 100
+      per_page: 100,
     }
 
-    const results: DeploymentsResponse = await this.client.request(request, params)
+    const results: DeploymentsResponse = await this.client.request(
+      request,
+      params,
+    )
 
     if (results.status !== 200) {
       console.log({ request, params })
@@ -61,12 +63,11 @@ class DeployClient implements Processor{
 
     const pages = await Promise.all(pagePromises)
 
-    return pages.flat()
+    return pages
+      .flat()
       .map((params) => ({ ...params, createdAt: params.created_at }))
       .map((params) => new Occurance(params))
   }
 }
 
-export {
-  DeployClient
-}
+export { DeployClient }

@@ -13,8 +13,8 @@ const start = async () => {
     },
     db: {
       url: 'mongodb://conan:conan@mongo:27017/stats_testing',
-      timeout: 100
-    }
+      timeout: 100,
+    },
   })
 }
 
@@ -22,8 +22,4 @@ const stop = async () => {
   await serverStop(server)
 }
 
-export {
-  start,
-  stop,
-  server
-}
+export { start, stop, server }

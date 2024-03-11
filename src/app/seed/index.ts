@@ -25,12 +25,15 @@ const seedDocs = async () => {
 
   console.log('Start inserting')
   await Promise.all(
-    occurancesAtts.map((atts) => Occurances.insertOne(occuranceFactory.build(atts)))
+    occurancesAtts.map((atts) =>
+      Occurances.insertOne(occuranceFactory.build(atts)),
+    ),
   )
 
   console.log(`Inserted ${occurancesAtts.length} occurances.`)
   await disconnect()
-
 }
 
-seedDocs().then((results) => console.log(results)).catch((reason) => console.log(reason))
+seedDocs()
+  .then((results) => console.log(results))
+  .catch((reason) => console.log(reason))
