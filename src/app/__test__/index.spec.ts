@@ -4,7 +4,14 @@ import * as path from 'path'
 import { Server } from 'http'
 import * as Occurances from '../models/Occurances'
 import { occuranceFactory } from '../models/__tests__/occuranceFactory'
-import {describe, beforeAll, beforeEach, it, expect, afterAll} from '@jest/globals'
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  it,
+  expect,
+  afterAll,
+} from '@jest/globals'
 
 let server: Server
 
@@ -17,8 +24,8 @@ beforeAll(async () => {
     },
     db: {
       url: 'mongodb://conan:conan@mongo:27017/stats_testing',
-      timeout: 100
-    }
+      timeout: 100,
+    },
   })
 })
 
@@ -36,26 +43,20 @@ describe('app', () => {
   describe('static directories', () => {
     describe('missing file', () => {
       it('returns 404', async () => {
-        await request(server)
-          .get('/assets/nonexistent-file.js')
-          .expect(404)
+        await request(server).get('/assets/nonexistent-file.js').expect(404)
       })
     })
 
     describe('existing file', () => {
       it('returns 200', async () => {
-        await request(server)
-          .get('/assets/exists.js')
-          .expect(200)
+        await request(server).get('/assets/exists.js').expect(200)
       })
     })
   })
 
   describe('httpass', () => {
     it('blocks when no password', async () => {
-      await request(server)
-        .get('/api')
-        .expect(401)
+      await request(server).get('/api').expect(401)
     })
 
     it('protects with password', async () => {
@@ -80,7 +81,6 @@ describe('app', () => {
     })
 
     describe('occurances', () => {
-
       const getResponse = async () => {
         return await request(server)
           .get('/api/occurances/deploy')

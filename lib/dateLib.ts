@@ -5,7 +5,6 @@ function build(dateString: string) {
 }
 
 function previous(date: string, unit: moment.DurationInputArg2 = 'day') {
-
   const newDate = moment(date, 'YYYY-M-D').subtract(1, unit)
 
   if (unit === 'day') {
@@ -24,8 +23,4 @@ function next(date: string, unit: moment.DurationInputArg2 = 'day') {
   return newDate.format('YYYY-M')
 }
 
-export {
-  build,
-  previous,
-  next
-}
+export { build, previous, next }

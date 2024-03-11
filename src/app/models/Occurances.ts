@@ -1,6 +1,6 @@
 import { getDb } from '../lib/database'
 import * as Joi from 'joi'
-import {ValidationError} from 'joi'
+import { ValidationError } from 'joi'
 import { Filter } from 'mongodb'
 
 interface Occurance {
@@ -12,7 +12,9 @@ interface Occurance {
 
 const schema = Joi.object<Occurance>({
   type: Joi.string().allow('deploy', 'contributer').only().required(),
-  bucket: Joi.string().pattern(/[0-9]{4}-[0-9]{2}-[0-9]{2}/).required(),
+  bucket: Joi.string()
+    .pattern(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)
+    .required(),
   occurredAt: Joi.date().required(),
   createdAt: Joi.date().default(() => new Date()),
 })
@@ -36,11 +38,4 @@ async function all() {
   return await collection().find({}).toArray()
 }
 
-export {
-  insertOne,
-  collection,
-  findByType,
-  all,
-  Occurance,
-  ValidationError
-}
+export { insertOne, collection, findByType, all, Occurance, ValidationError }

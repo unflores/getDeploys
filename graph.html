@@ -1,163 +1,170 @@
 <html>
+  <head>
+    <script src="./data/deploys.js"></script>
+    <script src="./data/fails.js"></script>
+    <script src="./data/contributers.js"></script>
+    <script src="./data/history.js"></script>
+    <script src="./data/releaseCandidates.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
 
-<head>
-  <script src="./data/deploys.js"></script>
-  <script src="./data/fails.js"></script>
-  <script src="./data/contributers.js"></script>
-  <script src="./data/history.js"></script>
-  <script src="./data/releaseCandidates.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-</head>
+  <body>
+    <div id="deploysGraph"></div>
+    <div id="changeFailGraph"></div>
+    <div id="releaseCandidatesGraph"></div>
 
-<body>
-  <div id="deploysGraph"></div>
-  <div id="changeFailGraph"></div>
-  <div id="releaseCandidatesGraph"></div>
-
-  <script>
-
-    const buildVerticalLine = (date) => {
-      return {
-        type: 'line',
-        x0: date,
-        y0: 0,
-        x1: date,
-        y1: 1,
-        yref: "paper",
-        name: "yass",
-        line: {
-          color: 'grey',
-          width: 1.5,
-          dash: 'dot'
+    <script>
+      const buildVerticalLine = (date) => {
+        return {
+          type: 'line',
+          x0: date,
+          y0: 0,
+          x1: date,
+          y1: 1,
+          yref: 'paper',
+          name: 'yass',
+          line: {
+            color: 'grey',
+            width: 1.5,
+            dash: 'dot',
+          },
         }
-      };
-    }
-
-    const buildHistoryLines = (historyEvents) => {
-      return Object.keys(historyEvents).map((date) => buildVerticalLine(date));
-    }
-
-    (() => {
-      if (typeof (contributers) === 'undefined' || typeof (deploys) === 'undefined') {
-        const graphHTML = document.querySelectorAll('#deploysGraph')[0];
-        graphHTML.innerHTML = 'No graph for Deploys.';
-        return;
-      }
-      const deploysPerContributer = Object.keys(contributers).reduce((result, date, index, arr) => {
-
-        result[date] = deploys[date] / contributers[date];
-        return result;
-      }, {});
-
-      const lines = [
-        {
-          mode: 'lines',
-          name: 'deploys',
-          line: { color: "#b55400" },
-          y: Object.values(deploys).reverse(),
-          x: Object.keys(deploys).reverse()
-        },
-        {
-          mode: 'lines',
-          name: 'deploys per contributer',
-          line: { color: '#333' },
-          y: Object.values(deploysPerContributer),
-          x: Object.keys(deploysPerContributer)
-        },
-        {
-          mode: 'lines',
-          name: 'contributers',
-          line: { color: '#abc' },
-          y: Object.values(contributers),
-          x: Object.keys(contributers)
-        }
-      ];
-
-      const layout = {
-        title: 'Deploys per period',
-        uirevision: 'true',
-        xaxis: { autorange: true },
-        yaxis: { autorange: true },
-        shapes: buildHistoryLines(historyEvents)
-      };
-
-      Plotly.react('deploysGraph', lines, layout);
-    })();
-  </script>
-
-  <script>
-    (() => {
-      if (typeof (fails) === 'undefined' || typeof (deploys) === 'undefined') {
-        const graphHTML = document.querySelectorAll('#changeFailGraph')[0];
-        graphHTML.innerHTML = 'No graph for Change-Fail rate.';
-        return;
       }
 
-      const changeFailRate = Object.keys(fails).reduce((result, date, index, arr) => {
-        const monthDate = date.split('-').slice(0, 2).join('-')
-        result[date] = (fails[date] / deploys[monthDate]) * 100;
-        return result;
-      }, {});
-      const graphHeight = Math.max(...Object.values(changeFailRate));
-
-      const lines = [
-        {
-          mode: 'lines',
-          name: 'Fails',
-          line: { color: "#b55400" },
-          y: Object.values(fails).reverse(),
-          x: Object.keys(fails).reverse()
-        },
-        {
-          mode: 'lines',
-          name: 'Change-Fail rate',
-          line: { color: '#333' },
-          y: Object.values(changeFailRate),
-          x: Object.keys(changeFailRate)
-        }
-      ];
-
-      const layout = {
-        title: 'Change Fail Rate',
-        uirevision: 'true',
-        xaxis: { autorange: true },
-        yaxis: { autorange: true },
-        shapes: buildHistoryLines(historyEvents)
-
-      };
-
-      Plotly.react('changeFailGraph', lines, layout);
-    })();
-  </script>
-
-  <script>
-    (() => {
-      if (typeof (contributers) === 'undefined' || typeof (deploys) === 'undefined') {
-        const graphHTML = document.querySelectorAll('#deploysGraph')[0];
-        graphHTML.innerHTML = 'No graph for Deploys.';
-        return;
+      const buildHistoryLines = (historyEvents) => {
+        return Object.keys(historyEvents).map((date) => buildVerticalLine(date))
       }
 
-      const lines = [
-        {
-          mode: 'lines',
-          name: 'release candidates',
-          line: { color: "#b55400" },
-          y: releaseCandidates.map((elements) => elements[1]),
-          x: releaseCandidates.map((elements) => elements[0])
+      ;(() => {
+        if (
+          typeof contributers === 'undefined' ||
+          typeof deploys === 'undefined'
+        ) {
+          const graphHTML = document.querySelectorAll('#deploysGraph')[0]
+          graphHTML.innerHTML = 'No graph for Deploys.'
+          return
         }
-      ];
+        const deploysPerContributer = Object.keys(contributers).reduce(
+          (result, date, index, arr) => {
+            result[date] = deploys[date] / contributers[date]
+            return result
+          },
+          {},
+        )
 
-      const layout = {
-        title: 'RC per month',
-        uirevision: 'true',
-        xaxis: { autorange: true },
-        yaxis: { autorange: true },
-      };
+        const lines = [
+          {
+            mode: 'lines',
+            name: 'deploys',
+            line: { color: '#b55400' },
+            y: Object.values(deploys).reverse(),
+            x: Object.keys(deploys).reverse(),
+          },
+          {
+            mode: 'lines',
+            name: 'deploys per contributer',
+            line: { color: '#333' },
+            y: Object.values(deploysPerContributer),
+            x: Object.keys(deploysPerContributer),
+          },
+          {
+            mode: 'lines',
+            name: 'contributers',
+            line: { color: '#abc' },
+            y: Object.values(contributers),
+            x: Object.keys(contributers),
+          },
+        ]
 
-      Plotly.react('releaseCandidatesGraph', lines, layout);
-    })();
-  </script>
-</body>
+        const layout = {
+          title: 'Deploys per period',
+          uirevision: 'true',
+          xaxis: { autorange: true },
+          yaxis: { autorange: true },
+          shapes: buildHistoryLines(historyEvents),
+        }
 
+        Plotly.react('deploysGraph', lines, layout)
+      })()
+    </script>
+
+    <script>
+      ;(() => {
+        if (typeof fails === 'undefined' || typeof deploys === 'undefined') {
+          const graphHTML = document.querySelectorAll('#changeFailGraph')[0]
+          graphHTML.innerHTML = 'No graph for Change-Fail rate.'
+          return
+        }
+
+        const changeFailRate = Object.keys(fails).reduce(
+          (result, date, index, arr) => {
+            const monthDate = date.split('-').slice(0, 2).join('-')
+            result[date] = (fails[date] / deploys[monthDate]) * 100
+            return result
+          },
+          {},
+        )
+        const graphHeight = Math.max(...Object.values(changeFailRate))
+
+        const lines = [
+          {
+            mode: 'lines',
+            name: 'Fails',
+            line: { color: '#b55400' },
+            y: Object.values(fails).reverse(),
+            x: Object.keys(fails).reverse(),
+          },
+          {
+            mode: 'lines',
+            name: 'Change-Fail rate',
+            line: { color: '#333' },
+            y: Object.values(changeFailRate),
+            x: Object.keys(changeFailRate),
+          },
+        ]
+
+        const layout = {
+          title: 'Change Fail Rate',
+          uirevision: 'true',
+          xaxis: { autorange: true },
+          yaxis: { autorange: true },
+          shapes: buildHistoryLines(historyEvents),
+        }
+
+        Plotly.react('changeFailGraph', lines, layout)
+      })()
+    </script>
+
+    <script>
+      ;(() => {
+        if (
+          typeof contributers === 'undefined' ||
+          typeof deploys === 'undefined'
+        ) {
+          const graphHTML = document.querySelectorAll('#deploysGraph')[0]
+          graphHTML.innerHTML = 'No graph for Deploys.'
+          return
+        }
+
+        const lines = [
+          {
+            mode: 'lines',
+            name: 'release candidates',
+            line: { color: '#b55400' },
+            y: releaseCandidates.map((elements) => elements[1]),
+            x: releaseCandidates.map((elements) => elements[0]),
+          },
+        ]
+
+        const layout = {
+          title: 'RC per month',
+          uirevision: 'true',
+          xaxis: { autorange: true },
+          yaxis: { autorange: true },
+        }
+
+        Plotly.react('releaseCandidatesGraph', lines, layout)
+      })()
+    </script>
+  </body>
 </html>

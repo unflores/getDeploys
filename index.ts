@@ -8,14 +8,13 @@ if (require.main) {
     server: {
       password: process.env.password,
       staticDir: process.env.staticDir,
-      port: process.env.PORT
+      port: process.env.PORT,
     },
     db: {
       url: process.env.dbUrl,
-      timeout: parseInt(process.env.dbSelectionTimeout, 10)
-    }
-
-  }).catch(error => console.log(error))
+      timeout: parseInt(process.env.dbSelectionTimeout, 10),
+    },
+  }).catch((error) => console.log(error))
 
   console.log(`I see you on ${process.env.PORT}`)
 }
