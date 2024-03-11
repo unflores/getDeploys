@@ -1,22 +1,10 @@
-import * as util from 'util'
-import { exec, ExecException } from 'child_process'
 
-const asyncExec = util.promisify(exec)
 import { Occurance } from './Occurance'
 import { Processor } from './types'
-
+import { asyncExec } from './utils'
 type Commit = {
   hash: string
   createdAt: string
-}
-
-// I'm not fully sure why this doesn't come back as a type, it is possibly b/c
-// eslint-disable-next-line max-len
-// I am using promisify... For more documentation: https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback
-type ExecResponse = {
-  error: ExecException | null
-  stdout: string
-  stderr: string
 }
 
 async function getCommits(absDirectory: string): Promise<Occurance[]> {
@@ -35,7 +23,7 @@ class GitLogReader implements Processor{
     const logs = await asyncExec(
       `git -C ${this.absPath} log --pretty=format:"%h_commitsep_%ad"`,
       { maxBuffer: 10 * 1024 * 1024 } // Bad temp idea
-    ) as ExecResponse
+    )
 
     return logs.stdout
       .split("\n")
