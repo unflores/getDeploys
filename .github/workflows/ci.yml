@@ -1,4 +1,4 @@
-name: Lint
+name: CI
 
 on:
   push:
@@ -8,8 +8,8 @@ env:
   YARN_VERSION: 4.0.2
 
 jobs:
-  linting:
-    name: Linting
+  build:
+    name: Setup Instance
     runs-on: ubuntu-latest
     steps:
       - name: Install NodeJS
@@ -34,3 +34,6 @@ jobs:
 
       - name: Lint Code
         run: yarn run lint
+
+      - name: Lint Code
+        run: yarn test
