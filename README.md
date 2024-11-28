@@ -1,7 +1,6 @@
 ## Description
 
-When using github for deploys, this will get the stats of deploy frequency for a given repo with respect to the amount of contributers.
-
+This sort of grew from a situation where my company needed some metrics on our deploy rate, Change fail rate, and some other metrics, largely looking at Dora metrics. The original code was made to just put into an html file. It was intended to be adapted to a website however, the data model didn't make sense to store in a database as it was meant to be consumed directly for the client. 
 ## Getting Started
 
 ```
